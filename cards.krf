@@ -93,8 +93,11 @@
 
 (isa WildTheCard SpecialCardTime)
 (genls WildTheCard PlayingCard)
-(comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild' or 'Wild draw 4'")
+(comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild'")
 
+(isa WildDraw4TheCard SpecialCardTime)
+(genls WildDraw4TheCard PlayingCard)
+(comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild draw 4'")
 
 
 
@@ -326,5 +329,5 @@
 (comment wildCard "The UNO playing card with the special ability to change the suit to the user's choice")
 
 (isa wildDraw4 WildColor)
-(isa wildDraw4 WildTheCard)
+(isa wildDraw4 WildDraw4TheCard)
 (comment wildDraw4 "The UNO playing card with the special ability to change the suit to the user's choice and make the next player draw four cards in place of their turn")
