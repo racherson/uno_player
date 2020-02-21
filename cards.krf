@@ -79,26 +79,42 @@
 (genls NineTheCard PlayingCard)
 (comment NineTheCard "A subcollection of PlayingCard that contains all of the cards which have the numerical value of 'Nine'")
 
-(isa ReverseTheCard SpecialCardTime)
+(isa ReverseTheCard SpecialCardType)
 (genls ReverseTheCard PlayingCard)
 (comment ReverseTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Reverse'")
 
-(isa SkipTheCard SpecialCardTime)
+(isa SkipTheCard SpecialCardType)
 (genls SkipTheCard PlayingCard)
 (comment SkipTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Skip'")
 
-(isa Draw2TheCard SpecialCardTime)
+(isa Draw2TheCard SpecialCardType)
 (genls Draw2TheCard PlayingCard)
 (comment Draw2TheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Draw 2'")
 
-(isa WildTheCard SpecialCardTime)
+(isa WildTheCard SpecialCardType)
 (genls WildTheCard PlayingCard)
 (comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild'")
 
-(isa WildDraw4TheCard SpecialCardTime)
+(isa WildDraw4TheCard SpecialCardType)
 (genls WildDraw4TheCard PlayingCard)
 (comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild draw 4'")
 
+;; collection for the state of the card
+
+(isa CardState KBDependentCollection)
+(genls CardState Location-Underspecified)
+(comment CardState "A collection of the states expressing whether a given card is currently in the players hand, has been played and discarded, or has not been seen")
+
+;; RELATION DEFINITIONS
+
+;; express state (in hand, unknown, discarded)
+
+(isa cardState BinaryPredicate)
+(genlPreds cardState locationState)  ;;maybe? lest there's something better
+(arity cardState 2)
+(arg1Isa cardState PlayingCard)
+(arg2Isa cardState CardState)
+(comment cardState "A relation connecting a playing card to its state--in the player's hand, unknown, or discarded")
 
 
 ;; ENTITY DEFINITIONS
@@ -331,3 +347,14 @@
 (isa wildDraw4 WildColor)
 (isa wildDraw4 WildDraw4TheCard)
 (comment wildDraw4 "The UNO playing card with the special ability to change the suit to the user's choice and make the next player draw four cards in place of their turn")
+
+;; card states
+
+(isa inhandCard CardState)
+(comment "The state that a card is currently in the given player's hand")
+
+(isa unseenCard CardState)
+(comment "A card that has not yet been seen--either it is in another player's hand or the deck")
+
+(isa discardedCard CardState)
+(comment "A card that has been played by a player")
