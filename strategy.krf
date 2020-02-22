@@ -1,1 +1,45 @@
 ;; Strategy rules
+
+;; Basic rules
+
+;;Compare two cards to determine if they're the same color
+(<==     (sameColor ?card1 ?card2)
+    (isa ?card1 ?cardColor)
+    (isa ?cardColor PlayingCardColor)
+    (isa ?card2 ?cardColor))
+
+;;Compare two cards to determine if they have the same number (version 1) or symbol (version 2)
+(<==    (sameSymbol ?card1 ?card2)
+    (isa ?card1 ?cardSymbol)
+    (isa ?cardSymbol NumberCardType)
+    (isa ?card2 ?cardSymbol))
+(<==    (sameSymbol ?card1 ?card2)
+    (isa ?card1 ?cardSymbol)
+    (isa ?cardSymbol SpecialCardType)
+    (isa ?card2 ?cardSymbol))
+
+;;TO DO: METHOD TO CHECK IF COLOR EXISTS IN HAND (FOR WILD DRAW 4 PLAYING REASONS)
+
+;;Check to see if any cards in the hand are the same color as the top card
+(<==    (anySameColorInHand ?card ?))
+
+;;Check to see playable cards in hand (same color, same number/symbol, wild, or wild draw4 and don't have the color)
+(<==     (playableCards ?card ?topCard)
+    (cardState inHandCard ?card)
+    (sameColor ?card ?topCard))
+(<==     (playableCards ?card ?topCard)
+    (cardState inHandCard ?card)
+    (sameSymbol ?card ?topCard))
+(<==     (playableCards ?card ?topCard)
+    (cardState inHandCard ?card)
+    (isa ?card WildTheCard))
+;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
+(<==    (playableCards ?card ?topCard)
+    (cardState inHandCard ?card)
+    (isa ?card wildDraw4)
+    )
+
+
+CONSIDERATIONS:
+1. How to check if a color is in the hand so know if can play a wild draw 4
+2. For playable cards, if a Draw 2 was played must play a Draw 2 or just pick
