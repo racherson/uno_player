@@ -105,6 +105,10 @@
 (genls CardState Location-Underspecified)
 (comment CardState "A collection of the states expressing whether a given card is currently in the players hand, has been played and discarded, or has not been seen")
 
+
+
+
+
 ;; RELATION DEFINITIONS
 
 ;; express state (in hand, unknown, discarded)
@@ -114,239 +118,13 @@
 (arity cardState 2)
 (arg1Isa cardState PlayingCard)
 (arg2Isa cardState CardState)
-(comment cardState "A relation connecting a playing card to its state--in the player's hand, unknown, or discarded")
+(comment cardState "A relation connecting a playing card to its state--in the player's hand, unseen, or discarded")
+
+
+
 
 
 ;; ENTITY DEFINITIONS
-
-;; red cards
-
-(isa red0 RedPlayingCard)
-(isa red0 ZeroTheCard)
-(comment red0 "The UNO playing card with the color red and value zero")
-
-(isa red1 RedPlayingCard)
-(isa red1 OneTheCard)
-(comment red1 "The UNO playing card with the color red and value one")
-
-(isa red2 RedPlayingCard)
-(isa red2 TwoTheCard)
-(comment red2 "The UNO playing card with the color red and value two")
-
-(isa red3 RedPlayingCard)
-(isa red3 ThreeTheCard)
-(comment red3 "The UNO playing card with the color red and value three")
-
-(isa red4 RedPlayingCard)
-(isa red4 FourTheCard)
-(comment red4 "The UNO playing card with the color red and value four")
-
-(isa red5 RedPlayingCard)
-(isa red5 FiveTheCard)
-(comment red5 "The UNO playing card with the color red and value five")
-
-(isa red6 RedPlayingCard)
-(isa red6 SixTheCard)
-(comment red6 "The UNO playing card with the color red and value six")
-
-(isa red7 RedPlayingCard)
-(isa red7 SevenTheCard)
-(comment red7 "The UNO playing card with the color red and value seven")
-
-(isa red8 RedPlayingCard)
-(isa red8 EightTheCard)
-(comment red8 "The UNO playing card with the color red and value eight")
-
-(isa red9 RedPlayingCard)
-(isa red9 NineTheCard)
-(comment red9 "The UNO playing card with the color red and value nine")
-
-(isa redreverse RedPlayingCard)
-(isa redreverse ReverseTheCard)
-(comment redreverse "The UNO playing card with the color red and special ability to reverse")
-
-(isa redskip RedPlayingCard)
-(isa redskip SkipTheCard)
-(comment redskip "The UNO playing card with the color red and special ability to skip")
-
-(isa reddraw2 RedPlayingCards)
-(isa reddraw2 Draw2TheCard)
-(comment reddraw2 "The UNO playing card with the color red and special ability to make another player draw two extra cards instead of their turn)
-
-
-;; blue cards
-
-(isa blue0 BluePlayingCard)
-(isa blue0 ZeroTheCard)
-(comment blue0 "The UNO playing card with the color blue and value zero")
-
-(isa blue1 BluePlayingCard)
-(isa blue1 OneTheCard)
-(comment blue1 "The UNO playing card with the color blue and value one")
-
-(isa blue2 BluePlayingCard)
-(isa blue2 TwoTheCard)
-(comment blue2 "The UNO playing card with the color blue and value two")
-
-(isa blue3 BluePlayingCard)
-(isa blue3 ThreeTheCard)
-(comment blue3 "The UNO playing card with the color blue and value three")
-
-(isa blue4 BluePlayingCard)
-(isa blue4 FourTheCard)
-(comment blue4 "The UNO playing card with the color blue and value four")
-
-(isa blue5 BluePlayingCard)
-(isa blue5 FiveTheCard)
-(comment blue5 "The UNO playing card with the color blue and value five")
-
-(isa blue6 BluePlayingCard)
-(isa blue6 SixTheCard)
-(comment blue6 "The UNO playing card with the color blue and value six")
-
-(isa blue7 BluePlayingCard)
-(isa blue7 SevenTheCard)
-(comment blue7 "The UNO playing card with the color blue and value seven")
-
-(isa blue8 BluePlayingCard)
-(isa blue8 EightTheCard)
-(comment blue8 "The UNO playing card with the color blue and value eight")
-
-(isa blue9 BluePlayingCard)
-(isa blue9 NineTheCard)
-(comment blue9 "The UNO playing card with the color blue and value nine")
-
-(isa bluereverse BluePlayingCard)
-(isa bluereverse ReverseTheCard)
-(comment bluereverse "The UNO playing card with the color blue and special ability to reverse")
-
-(isa blueskip BluePlayingCard)
-(isa blueskip SkipTheCard)
-(comment blueskip "The UNO playing card with the color red and special ability to skip")
-
-(isa bluedraw2 BluePlayingCards)
-(isa bluedraw2 Draw2TheCard)
-(comment bluedraw2 "The UNO playing card with the color blue and special ability to make another player draw two extra cards instead of their turn)
-
-
-;; green cards
-
-(isa green0 GreenPlayingCard)
-(isa green0 ZeroTheCard)
-(comment green0 "The UNO playing card with the color green and value zero")
-
-(isa green1 GreenPlayingCard)
-(isa green1 OneTheCard)
-(comment green1 "The UNO playing card with the color green and value one")
-
-(isa green2 GreenPlayingCard)
-(isa green2 TwoTheCard)
-(comment green2 "The UNO playing card with the color green and value two")
-
-(isa green3 GreenPlayingCard)
-(isa green3 ThreeTheCard)
-(comment green3 "The UNO playing card with the color green and value three")
-
-(isa green4 GreenPlayingCard)
-(isa green4 FourTheCard)
-(comment green4 "The UNO playing card with the color green and value four")
-
-(isa green5 GreenPlayingCard)
-(isa green5 FiveTheCard)
-(comment green5 "The UNO playing card with the color green and value five")
-
-(isa green6 GreenPlayingCard)
-(isa green6 SixTheCard)
-(comment green6 "The UNO playing card with the color green and value six")
-
-(isa green7 GreenPlayingCard)
-(isa green7 SevenTheCard)
-(comment green7 "The UNO playing card with the color green and value seven")
-
-(isa green8 GreenPlayingCard)
-(isa green8 EightTheCard)
-(comment green8 "The UNO playing card with the color green and value eight")
-
-(isa green9 GreenPlayingCard)
-(isa green9 NineTheCard)
-(comment green9 "The UNO playing card with the color green and value nine")
-
-(isa greenreverse GreenPlayingCard)
-(isa greenreverse ReverseTheCard)
-(comment greenreverse "The UNO playing card with the color green and special ability to reverse")
-
-(isa greenskip GreenPlayingCard)
-(isa greenskip SkipTheCard)
-(comment greenskip "The UNO playing card with the color red and special ability to skip")
-
-(isa greendraw2 GreenPlayingCards)
-(isa greendraw2 Draw2TheCard)
-(comment greendraw2 "The UNO playing card with the color green and special ability to make another player draw two extra cards instead of their turn)
-
-
-;; yellow cards
-
-(isa yellow0 YellowPlayingCard)
-(isa yellow0 ZeroTheCard)
-(comment yellow0 "The UNO playing card with the color yellow and value zero")
-
-(isa yellow1 YellowPlayingCard)
-(isa yellow1 OneTheCard)
-(comment yellow1 "The UNO playing card with the color yellow and value one")
-
-(isa yellow2 YellowPlayingCard)
-(isa yellow2 TwoTheCard)
-(comment yellow2 "The UNO playing card with the color yellow and value two")
-
-(isa yellow3 YellowPlayingCard)
-(isa yellow3 ThreeTheCard)
-(comment yellow3 "The UNO playing card with the color yellow and value three")
-
-(isa yellow4 YellowPlayingCard)
-(isa yellow4 FourTheCard)
-(comment yellow4 "The UNO playing card with the color yellow and value four")
-
-(isa yellow5 YellowPlayingCard)
-(isa yellow5 FiveTheCard)
-(comment yellow5 "The UNO playing card with the color yellow and value five")
-
-(isa yellow6 YellowPlayingCard)
-(isa yellow6 SixTheCard)
-(comment yellow6 "The UNO playing card with the color yellow and value six")
-
-(isa yellow7 YellowPlayingCard)
-(isa yellow7 SevenTheCard)
-(comment yellow7 "The UNO playing card with the color yellow and value seven")
-
-(isa yellow8 YellowPlayingCard)
-(isa yellow8 EightTheCard)
-(comment yellow8 "The UNO playing card with the color yellow and value eight")
-
-(isa yellow9 YellowPlayingCard)
-(isa yellow9 NineTheCard)
-(comment yellow9 "The UNO playing card with the color yellow and value nine")
-
-(isa yellowreverse YellowPlayingCard)
-(isa yellowreverse ReverseTheCard)
-(comment yellowreverse "The UNO playing card with the color yellow and special ability to reverse")
-
-(isa yellowskip YellowPlayingCard)
-(isa yellowskip SkipTheCard)
-(comment yellowskip "The UNO playing card with the color yellow and special ability to skip")
-
-(isa yellowdraw2 YellowPlayingCards)
-(isa yellowdraw2 Draw2TheCard)
-(comment yellowdraw2 "The UNO playing card with the color yellow and special ability to make another player draw two extra cards instead of their turn)
-
-
-;; Wild cards
-(isa wildCard WildColor)
-(isa wildCard WildTheCard)
-(comment wildCard "The UNO playing card with the special ability to change the suit to the user's choice")
-
-(isa wildDraw4 WildColor)
-(isa wildDraw4 WildDraw4TheCard)
-(comment wildDraw4 "The UNO playing card with the special ability to change the suit to the user's choice and make the next player draw four cards in place of their turn")
 
 ;; card states
 
@@ -358,3 +136,286 @@
 
 (isa discardedCard CardState)
 (comment "A card that has been played by a player")
+
+;; red cards
+
+(isa red0 RedPlayingCard)
+(isa red0 ZeroTheCard)
+(comment red0 "The UNO playing card with the color red and value zero")
+(cardState red0 unseenCard)
+
+(isa red1 RedPlayingCard)
+(isa red1 OneTheCard)
+(comment red1 "The UNO playing card with the color red and value one")
+(cardState red1 unseenCard)
+
+(isa red2 RedPlayingCard)
+(isa red2 TwoTheCard)
+(comment red2 "The UNO playing card with the color red and value two")
+(cardState red2 unseenCard)
+
+(isa red3 RedPlayingCard)
+(isa red3 ThreeTheCard)
+(comment red3 "The UNO playing card with the color red and value three")
+(cardState red3 unseenCard)
+
+(isa red4 RedPlayingCard)
+(isa red4 FourTheCard)
+(comment red4 "The UNO playing card with the color red and value four")
+(cardState red4 unseenCard)
+
+(isa red5 RedPlayingCard)
+(isa red5 FiveTheCard)
+(comment red5 "The UNO playing card with the color red and value five")
+(cardState red5 unseenCard)
+
+(isa red6 RedPlayingCard)
+(isa red6 SixTheCard)
+(comment red6 "The UNO playing card with the color red and value six")
+(cardState red6 unseenCard)
+
+(isa red7 RedPlayingCard)
+(isa red7 SevenTheCard)
+(comment red7 "The UNO playing card with the color red and value seven")
+(cardState red7 unseenCard)
+
+(isa red8 RedPlayingCard)
+(isa red8 EightTheCard)
+(comment red8 "The UNO playing card with the color red and value eight")
+(cardState red8 unseenCard)
+
+(isa red9 RedPlayingCard)
+(isa red9 NineTheCard)
+(comment red9 "The UNO playing card with the color red and value nine")
+(cardState red9 unseenCard)
+
+(isa redreverse RedPlayingCard)
+(isa redreverse ReverseTheCard)
+(comment redreverse "The UNO playing card with the color red and special ability to reverse")
+(cardState redreverse unseenCard)
+
+(isa redskip RedPlayingCard)
+(isa redskip SkipTheCard)
+(comment redskip "The UNO playing card with the color red and special ability to skip")
+(cardState redskip unseenCard)
+
+(isa reddraw2 RedPlayingCards)
+(isa reddraw2 Draw2TheCard)
+(comment reddraw2 "The UNO playing card with the color red and special ability to make another player draw two extra cards instead of their turn)
+(cardState reddraw2 unseenCard)
+
+
+;; blue cards
+
+(isa blue0 BluePlayingCard)
+(isa blue0 ZeroTheCard)
+(comment blue0 "The UNO playing card with the color blue and value zero")
+(cardState blue0 unseenCard)
+
+(isa blue1 BluePlayingCard)
+(isa blue1 OneTheCard)
+(comment blue1 "The UNO playing card with the color blue and value one")
+(cardState blue1 unseenCard)
+
+(isa blue2 BluePlayingCard)
+(isa blue2 TwoTheCard)
+(comment blue2 "The UNO playing card with the color blue and value two")
+(cardState blue2 unseenCard)
+
+(isa blue3 BluePlayingCard)
+(isa blue3 ThreeTheCard)
+(comment blue3 "The UNO playing card with the color blue and value three")
+(cardState blue3 unseenCard)
+
+(isa blue4 BluePlayingCard)
+(isa blue4 FourTheCard)
+(comment blue4 "The UNO playing card with the color blue and value four")
+(cardState blue4 unseenCard)
+
+(isa blue5 BluePlayingCard)
+(isa blue5 FiveTheCard)
+(comment blue5 "The UNO playing card with the color blue and value five")
+(cardState blue5 unseenCard)
+
+(isa blue6 BluePlayingCard)
+(isa blue6 SixTheCard)
+(comment blue6 "The UNO playing card with the color blue and value six")
+(cardState blue6 unseenCard)
+
+(isa blue7 BluePlayingCard)
+(isa blue7 SevenTheCard)
+(comment blue7 "The UNO playing card with the color blue and value seven")
+(cardState blue7 unseenCard)
+
+(isa blue8 BluePlayingCard)
+(isa blue8 EightTheCard)
+(comment blue8 "The UNO playing card with the color blue and value eight")
+(cardState blue8 unseenCard)
+
+(isa blue9 BluePlayingCard)
+(isa blue9 NineTheCard)
+(comment blue9 "The UNO playing card with the color blue and value nine")
+(cardState blue9 unseenCard)
+
+(isa bluereverse BluePlayingCard)
+(isa bluereverse ReverseTheCard)
+(comment bluereverse "The UNO playing card with the color blue and special ability to reverse")
+(cardState bluereverse unseenCard)
+
+(isa blueskip BluePlayingCard)
+(isa blueskip SkipTheCard)
+(comment blueskip "The UNO playing card with the color red and special ability to skip")
+(cardState blueskip unseenCard)
+
+(isa bluedraw2 BluePlayingCards)
+(isa bluedraw2 Draw2TheCard)
+(comment bluedraw2 "The UNO playing card with the color blue and special ability to make another player draw two extra cards instead of their turn)
+(cardState bluedraw2 unseenCard)
+
+
+;; green cards
+
+(isa green0 GreenPlayingCard)
+(isa green0 ZeroTheCard)
+(comment green0 "The UNO playing card with the color green and value zero")
+(cardState green0 unseenCard)
+
+(isa green1 GreenPlayingCard)
+(isa green1 OneTheCard)
+(comment green1 "The UNO playing card with the color green and value one")
+(cardState green1 unseenCard)
+
+(isa green2 GreenPlayingCard)
+(isa green2 TwoTheCard)
+(comment green2 "The UNO playing card with the color green and value two")
+(cardState green2 unseenCard)
+
+(isa green3 GreenPlayingCard)
+(isa green3 ThreeTheCard)
+(comment green3 "The UNO playing card with the color green and value three")
+(cardState green3 unseenCard)
+
+(isa green4 GreenPlayingCard)
+(isa green4 FourTheCard)
+(comment green4 "The UNO playing card with the color green and value four")
+(cardState green4 unseenCard)
+
+(isa green5 GreenPlayingCard)
+(isa green5 FiveTheCard)
+(comment green5 "The UNO playing card with the color green and value five")
+(cardState green5 unseenCard)
+
+(isa green6 GreenPlayingCard)
+(isa green6 SixTheCard)
+(comment green6 "The UNO playing card with the color green and value six")
+(cardState green6 unseenCard)
+
+(isa green7 GreenPlayingCard)
+(isa green7 SevenTheCard)
+(comment green7 "The UNO playing card with the color green and value seven")
+(cardState green7 unseenCard)
+
+(isa green8 GreenPlayingCard)
+(isa green8 EightTheCard)
+(comment green8 "The UNO playing card with the color green and value eight")
+(cardState green8 unseenCard)
+
+(isa green9 GreenPlayingCard)
+(isa green9 NineTheCard)
+(comment green9 "The UNO playing card with the color green and value nine")
+(cardState green9 unseenCard)
+
+(isa greenreverse GreenPlayingCard)
+(isa greenreverse ReverseTheCard)
+(comment greenreverse "The UNO playing card with the color green and special ability to reverse")
+(cardState greenreverse unseenCard)
+
+(isa greenskip GreenPlayingCard)
+(isa greenskip SkipTheCard)
+(comment greenskip "The UNO playing card with the color red and special ability to skip")
+(cardState greenskip unseenCard)
+
+(isa greendraw2 GreenPlayingCards)
+(isa greendraw2 Draw2TheCard)
+(comment greendraw2 "The UNO playing card with the color green and special ability to make another player draw two extra cards instead of their turn)
+(cardState greendraw2 unseenCard)
+
+
+;; yellow cards
+
+(isa yellow0 YellowPlayingCard)
+(isa yellow0 ZeroTheCard)
+(comment yellow0 "The UNO playing card with the color yellow and value zero")
+(cardState yellow0 unseenCard)
+
+(isa yellow1 YellowPlayingCard)
+(isa yellow1 OneTheCard)
+(comment yellow1 "The UNO playing card with the color yellow and value one")
+(cardState yellow1 unseenCard)
+
+(isa yellow2 YellowPlayingCard)
+(isa yellow2 TwoTheCard)
+(comment yellow2 "The UNO playing card with the color yellow and value two")
+(cardState yellow2 unseenCard)
+
+(isa yellow3 YellowPlayingCard)
+(isa yellow3 ThreeTheCard)
+(comment yellow3 "The UNO playing card with the color yellow and value three")
+(cardState yellow3 unseenCard)
+
+(isa yellow4 YellowPlayingCard)
+(isa yellow4 FourTheCard)
+(comment yellow4 "The UNO playing card with the color yellow and value four")
+(cardState yellow4 unseenCard)
+
+(isa yellow5 YellowPlayingCard)
+(isa yellow5 FiveTheCard)
+(comment yellow5 "The UNO playing card with the color yellow and value five")
+(cardState yellow5 unseenCard)
+
+(isa yellow6 YellowPlayingCard)
+(isa yellow6 SixTheCard)
+(comment yellow6 "The UNO playing card with the color yellow and value six")
+(cardState yellow6 unseenCard)
+
+(isa yellow7 YellowPlayingCard)
+(isa yellow7 SevenTheCard)
+(comment yellow7 "The UNO playing card with the color yellow and value seven")
+(cardState yellow7 unseenCard)
+
+(isa yellow8 YellowPlayingCard)
+(isa yellow8 EightTheCard)
+(comment yellow8 "The UNO playing card with the color yellow and value eight")
+(cardState yellow8 unseenCard)
+
+(isa yellow9 YellowPlayingCard)
+(isa yellow9 NineTheCard)
+(comment yellow9 "The UNO playing card with the color yellow and value nine")
+(cardState yellow9 unseenCard)
+
+(isa yellowreverse YellowPlayingCard)
+(isa yellowreverse ReverseTheCard)
+(comment yellowreverse "The UNO playing card with the color yellow and special ability to reverse")
+(cardState yellowreverse unseenCard)
+
+(isa yellowskip YellowPlayingCard)
+(isa yellowskip SkipTheCard)
+(comment yellowskip "The UNO playing card with the color yellow and special ability to skip")
+(cardState yellowskip unseenCard)
+
+(isa yellowdraw2 YellowPlayingCards)
+(isa yellowdraw2 Draw2TheCard)
+(comment yellowdraw2 "The UNO playing card with the color yellow and special ability to make another player draw two extra cards instead of their turn)
+(cardState yellowdraw2 unseenCard)
+
+
+;; Wild cards
+(isa wildCard WildColor)
+(isa wildCard WildTheCard)
+(comment wildCard "The UNO playing card with the special ability to change the suit to the user's choice")
+(cardState wildCard unseenCard)
+
+(isa wildDraw4 WildColor)
+(isa wildDraw4 WildDraw4TheCard)
+(comment wildDraw4 "The UNO playing card with the special ability to change the suit to the user's choice and make the next player draw four cards in place of their turn")
+(cardState wildDraw4 unseenCard)
