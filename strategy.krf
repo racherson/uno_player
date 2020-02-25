@@ -2,23 +2,27 @@
 
 ;; Basic rules
 
+
 ;;Compare two cards to determine if they're the same color
 (<==     (sameColor ?card1 ?card2)
     (isa ?card1 ?cardColor)
     (isa ?cardColor PlayingCardColor)
     (isa ?card2 ?cardColor))
 
+
 ;;Compare two cards to determine if they have the same number (version 1) or symbol (version 2)
 (<==    (sameSymbol ?card1 ?card2)
-    (isa ?card1 ?cardValue)
-    (isa ?cardValue NumberCardType)
-    (isa ?card2 ?cardValue))
+    (isa ?card1 ?number)
+    (isa ?number NumberCardType)
+    (isa ?card2 ?number))
 (<==    (sameSymbol ?card1 ?card2)
-    (isa ?card1 ?cardValue)
-    (isa ?cardValue SpecialCardType)
-    (isa ?card2 ?cardValue))
+    (isa ?card1 ?symbol)
+    (isa ?symbol SpecialCardType)
+    (isa ?card2 ?symbol))
+
 
 ;;TO DO: METHOD TO CHECK IF COLOR EXISTS IN HAND (FOR WILD DRAW 4 PLAYING REASONS)
+
 
 ;;Check to see if any cards in the hand are the same color as the top card
 (<==    (anySameColorInHand ?card ?))
@@ -43,3 +47,29 @@
 ;; CONSIDERATIONS:
 ;; 1. How to check if a color is in the hand so know if can play a wild draw 4
 ;; 2. For playable cards, if a Draw 2 was played must play a Draw 2 or just pick
+
+
+;;method to get greatest playable card
+
+(<==    (greatestPlayableCard ?greatestCard ?topCard)
+    (and (evaluate ?availableCardValues
+          (SetToListFn
+           (TheClosedRetrievalSetOf ?cardValues
+            (PlayableCardValues ?cardValues ?topCard))))
+    (evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
+    (playableCards ?greatestCard ?topCard)
+    (cardValue ?greatestCard ?topValue))
+
+;;method to get values of playable cards
+
+(<==    (PlayableCardValues ?v1 ?topCard)
+    (playableCards ?card1 ?topCard)
+    (isa ?card1 NumberCardType)
+    (cardValue ?card1 ?v1))
+
+
+(and (evaluate ?availableCardValues
+          (SetToListFn
+           (TheClosedRetrievalSetOf ?cardValues
+            (PlayableCardValues ?cardValues green6))))
+    (evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
