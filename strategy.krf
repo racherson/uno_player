@@ -1,3 +1,9 @@
+;; Get card properties
+
+(<== (cardColor ?card ?col) 
+        (isa ?card ?col)
+        (isa ?col PlayingCardColor))
+
 ;; Strategy rules
 
 ;; Basic rules
