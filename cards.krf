@@ -124,7 +124,7 @@
 (arity cardValue 2)
 (arg1Isa cardValue PlayingCard)
 (arg2Isa cardValue Number)
-(comment cardValue "A relation connecting a playing card to its numeric value") 
+(comment cardValue "A relation connecting a playing card to its numeric value")
 
 
 
@@ -133,13 +133,13 @@
 ;; card states
 
 (isa inHandCard CardState)
-(comment "The state that a card is currently in the given player's hand")
+(comment inHandCard "The state that a card is currently in the given player's hand")
 
 (isa unseenCard CardState)
-(comment "A card that has not yet been seen--either it is in another player's hand or the deck")
+(comment unseenCard "A card that has not yet been seen--either it is in another player's hand or the deck")
 
 (isa discardedCard CardState)
-(comment "A card that has been played by a player")
+(comment discardedCard "A card that has been played by a player")
 
 ;; red cards
 
