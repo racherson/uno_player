@@ -16,13 +16,13 @@
 
 ;;Compare two cards to determine if they have the same number (version 1) or symbol (version 2)
 (<==    (sameSymbol ?card1 ?card2)
-    (isa ?card1 ?cardSymbol)
-    (isa ?cardSymbol NumberCardType)
-    (isa ?card2 ?cardSymbol))
+    (isa ?card1 ?cardValue)
+    (isa ?cardValue NumberCardType)
+    (isa ?card2 ?cardValue))
 (<==    (sameSymbol ?card1 ?card2)
-    (isa ?card1 ?cardSymbol)
-    (isa ?cardSymbol SpecialCardType)
-    (isa ?card2 ?cardSymbol))
+    (isa ?card1 ?cardValue)
+    (isa ?cardValue SpecialCardType)
+    (isa ?card2 ?cardValue))
 
 ;;TO DO: METHOD TO CHECK IF COLOR EXISTS IN HAND (FOR WILD DRAW 4 PLAYING REASONS)
 
@@ -40,10 +40,10 @@
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
 ;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
-(<==    (playableCards ?card ?topCard)
-    (cardState ?card inHandCard)
-    (isa ?card wildDraw4)
-    )
+;;(<==    (playableCards ?card ?topCard)
+;;    (cardState ?card inHandCard)
+;;    (isa ?card wildDraw4)
+;;    )
 
 
 ;; CONSIDERATIONS:
