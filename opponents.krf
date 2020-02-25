@@ -1,0 +1,68 @@
+;; opponent information
+
+(in-microtheory UnoPlayer)
+
+;; Collections
+
+(isa UnoOpponent ClarifyingCollectionType)
+(genls UnoOpponent ExistingObjectType)
+(comment UnoOpponent "A collection of opponent players in Uno")
+
+(isa PreferenceState ClarifyingCollectionType)
+(genls PreferenceState ExistingObjectType)
+(comment PreferenceState "A collection of the three types of color preferences: preferred, neutral, avoid")
+
+;; Relations
+
+(isa opponentHandSize BinaryPredicate)
+(arity opponentHandSize 2)
+(arg1Isa opponentHandSize UnoOpponent)
+(arg2Isa opponentHandSize Number)
+(comment opponentHandSize "A relation connecting an opponent to number of cards in their hand")
+
+
+(isa colorPreference TernaryPredicate)
+(arity colorPreference 3)
+(arg1Isa colorPreference UnoOpponent)
+(arg2Isa colorPreference PlayingCardColor)
+(arg3Isa colorPreference PreferenceState)
+(comment colorPreference "A relation connecting an opponent to their color playing preferences")
+
+;; Entities
+
+(isa unoPreferred PreferenceState)
+(comment preferred "Opponent likely has this color")
+
+(isa unoNeutral PreferenceState)
+(comment unoNeutral "Opponent has unknown preference for this color")
+
+(isa unoAvoid PreferenceState)
+(comment avoid "Opponent likey does not have this color")
+
+(isa opponent1 UnoOpponent)
+(colorPreference opponent1 RedPlayingCard unoNeutral)
+(colorPreference opponent1 GreenPlayingCard unoNeutral)
+(colorPreference opponent1 BluePlayingCard unoNeutral)
+(colorPreference opponent1 YellowPlayingCard unoNeutral)
+(opponentHandSize opponent1 7)
+(comment opponent1 "First of three opponents in Uno")
+
+(isa opponent2 UnoOpponent)
+(colorPreference opponent2 RedPlayingCard unoNeutral)
+(colorPreference opponent2 GreenPlayingCard unoNeutral)
+(colorPreference opponent2 BluePlayingCard unoNeutral)
+(colorPreference opponent2 YellowPlayingCard unoNeutral)
+(opponentHandSize opponent1 7)
+(comment opponent2 "Second of three opponents in Uno")
+
+(isa opponent3 UnoOpponent)
+(colorPreference opponent3 RedPlayingCard unoNeutral)
+(colorPreference opponent3 GreenPlayingCard unoNeutral)
+(colorPreference opponent3 BluePlayingCard unoNeutral)
+(colorPreference opponent3 YellowPlayingCard unoNeutral)
+(opponentHandSize opponent1 7)
+(comment opponent3 "Third of three opponents in Uno")
+
+
+
+
