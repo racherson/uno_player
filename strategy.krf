@@ -53,17 +53,19 @@
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
 ;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
-<<<<<<< HEAD
+
 ;;(<==    (playableCards ?card ?topCard)
 ;;    (numberCardsToDraw cardsToDraw ?num)
 ;;    (equals ?num 0)
 ;;    (cardState ?card inHandCard)
 ;;    (isa ?card wildDraw4)
 ;;    )
+
 (<==    (playableCards ?card ?topCard)
     (isa ?topCard Draw2TheCard)
     (haveDraw2Card ?card))
-=======
+
+
 (<==    (playableCards ?playableWildCard ?topCard)
     (cardColor ?topCard ?topColor)
     (and (evaluate ?cardsMatchingTopColorInHand
@@ -74,8 +76,6 @@
         (equals ?n-cardsMatchingTopColorInHand 0)
         (cardState ?playableWildCard inHandCard)
         (isa ?playableWildCard WildDraw4TheCard)))
-
->>>>>>> 79fd0c419b064460a568a3b1cfe02b676e88a1ac
 
 
 ;; CONSIDERATIONS:
