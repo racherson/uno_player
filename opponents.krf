@@ -37,7 +37,7 @@
 (comment unoNeutral "Opponent has unknown preference for this color")
 
 (isa unoAvoid PreferenceState)
-(comment avoid "Opponent likey does not have this color")
+(comment avoid "Opponent likely does not have this color")
 
 (isa opponent1 UnoOpponent)
 (colorPreference opponent1 RedPlayingCard unoNeutral)
@@ -62,7 +62,3 @@
 (colorPreference opponent3 YellowPlayingCard unoNeutral)
 (opponentHandSize opponent1 7)
 (comment opponent3 "Third of three opponents in Uno")
-
-
-
-

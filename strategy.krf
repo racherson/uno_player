@@ -1,6 +1,6 @@
 ;; Get card properties
 
-(<== (cardColor ?card ?col) 
+(<== (cardColor ?card ?col)
         (isa ?card ?col)
         (isa ?col PlayingCardColor))
 
@@ -27,11 +27,12 @@
     (isa ?card2 ?symbol))
 
 
-;;TO DO: METHOD TO CHECK IF COLOR EXISTS IN HAND (FOR WILD DRAW 4 PLAYING REASONS)
-
-
+;;METHOD TO CHECK IF COLOR EXISTS IN HAND (FOR WILD DRAW 4 PLAYING REASONS)
 ;;Check to see if any cards in the hand are the same color as the top card
-(<==    (anySameColorInHand ?card ?))
+(<==    (colorInHand ?color ?card)
+    (cardState ?card inHandCard)
+    (isa ?card ?color))
+
 
 ;;Check to see playable cards in hand (same color, same number/symbol, wild, or wild draw4 and don't have the color)
 (<==     (playableCards ?card ?topCard)
@@ -53,6 +54,10 @@
 ;; CONSIDERATIONS:
 ;; 1. How to check if a color is in the hand so know if can play a wild draw 4
 ;; 2. For playable cards, if a Draw 2 was played must play a Draw 2 or just pick
+
+(<==    (haveDraw2Card ?card)
+    (cardState ?card inHandCard)
+    (isa ?card Draw2TheCard))
 
 
 ;;method to get greatest playable card

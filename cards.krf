@@ -213,9 +213,9 @@
 (comment redskip "The UNO playing card with the color red and special ability to skip")
 (cardState redskip unseenCard)
 
-(isa reddraw2 RedPlayingCards)
+(isa reddraw2 RedPlayingCard)
 (isa reddraw2 Draw2TheCard)
-(comment reddraw2 "The UNO playing card with the color red and special ability to make another player draw two extra cards instead of their turn)
+(comment reddraw2 "The UNO playing card with the color red and special ability to make another player draw two extra cards instead of their turn")
 (cardState reddraw2 unseenCard)
 
 
@@ -291,9 +291,9 @@
 (comment blueskip "The UNO playing card with the color red and special ability to skip")
 (cardState blueskip unseenCard)
 
-(isa bluedraw2 BluePlayingCards)
+(isa bluedraw2 BluePlayingCard)
 (isa bluedraw2 Draw2TheCard)
-(comment bluedraw2 "The UNO playing card with the color blue and special ability to make another player draw two extra cards instead of their turn)
+(comment bluedraw2 "The UNO playing card with the color blue and special ability to make another player draw two extra cards instead of their turn")
 (cardState bluedraw2 unseenCard)
 
 
@@ -369,9 +369,9 @@
 (comment greenskip "The UNO playing card with the color red and special ability to skip")
 (cardState greenskip unseenCard)
 
-(isa greendraw2 GreenPlayingCards)
+(isa greendraw2 GreenPlayingCard)
 (isa greendraw2 Draw2TheCard)
-(comment greendraw2 "The UNO playing card with the color green and special ability to make another player draw two extra cards instead of their turn)
+(comment greendraw2 "The UNO playing card with the color green and special ability to make another player draw two extra cards instead of their turn")
 (cardState greendraw2 unseenCard)
 
 
@@ -447,9 +447,9 @@
 (comment yellowskip "The UNO playing card with the color yellow and special ability to skip")
 (cardState yellowskip unseenCard)
 
-(isa yellowdraw2 YellowPlayingCards)
+(isa yellowdraw2 YellowPlayingCard)
 (isa yellowdraw2 Draw2TheCard)
-(comment yellowdraw2 "The UNO playing card with the color yellow and special ability to make another player draw two extra cards instead of their turn)
+(comment yellowdraw2 "The UNO playing card with the color yellow and special ability to make another player draw two extra cards instead of their turn")
 (cardState yellowdraw2 unseenCard)
 
 
