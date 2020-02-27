@@ -1,3 +1,5 @@
+(in-microtheory UnoPlayer)
+
 ;; Get card properties
 
 (<== (cardColor ?card ?col)
@@ -45,10 +47,17 @@
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
 ;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
-;;(<==    (playableCards ?card ?topCard)
-;;    (cardState ?card inHandCard)
-;;    (isa ?card wildDraw4)
-;;    )
+(<==    (playableCards ?playableWildCard ?topCard)
+    (cardColor ?topCard ?topColor)
+    (and (evaluate ?cardsMatchingTopColorInHand
+          (SetToListFn
+           (TheClosedRetrievalSetOf ?cards
+            (colorInHand ?topColor ?cards))))
+        (evaluate ?n-cardsMatchingTopColorInHand (LengthOfListFn ?cardsMatchingTopColorInHand))
+        (equals ?n-cardsMatchingTopColorInHand 0)
+        (cardState ?playableWildCard inHandCard)
+        (isa ?playableWildCard WildDraw4TheCard)))
+
 
 
 ;; CONSIDERATIONS:
@@ -79,8 +88,8 @@
     (cardValue ?card1 ?v1))
 
 
-(and (evaluate ?availableCardValues
-          (SetToListFn
-           (TheClosedRetrievalSetOf ?cardValues
-            (PlayableCardValues ?cardValues green6))))
-    (evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
+;;;(and (evaluate ?availableCardValues
+;;;         (SetToListFn
+;;;         (TheClosedRetrievalSetOf ?cardValues
+;;;    (PlayableCardValues ?cardValues green6))))
+;;;(evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
