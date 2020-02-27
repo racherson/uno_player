@@ -36,19 +36,30 @@
 
 ;;Check to see playable cards in hand (same color, same number/symbol, wild, or wild draw4 and don't have the color)
 (<==     (playableCards ?card ?topCard)
+    (numberCardsToDraw cardsToDraw ?num)
+    (equals ?num 0)
     (cardState ?card inHandCard)
     (sameColor ?card ?topCard))
 (<==     (playableCards ?card ?topCard)
+    (numberCardsToDraw cardsToDraw ?num)
+    (equals ?num 0)
     (cardState ?card inHandCard)
     (sameSymbol ?card ?topCard))
 (<==     (playableCards ?card ?topCard)
+    (numberCardsToDraw cardsToDraw ?num)
+    (equals ?num 0)
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
 ;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
 ;;(<==    (playableCards ?card ?topCard)
+;;    (numberCardsToDraw cardsToDraw ?num)
+;;    (equals ?num 0)
 ;;    (cardState ?card inHandCard)
 ;;    (isa ?card wildDraw4)
 ;;    )
+(<==    (playableCards ?card ?topCard)
+    (isa ?topCard Draw2TheCard)
+    (haveDraw2Card ?card))
 
 
 ;; CONSIDERATIONS:
