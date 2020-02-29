@@ -67,7 +67,6 @@
     (equals ?drawCount 0)
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
-<<<<<<< HEAD
 ;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
 ;;(<==    (playableCards ?card ?topCard)
 ;;    (numberCardsToDraw cardsToDraw ?num)
@@ -113,7 +112,6 @@
 ;;;         (TheClosedRetrievalSetOf ?cardValues
 ;;;    (PlayableCardValues ?cardValues green6))))
 ;;;(evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
-=======
 
 ;; *** check for playable draw2 cards
 ;; case when numberCardsToDraw is > 0
@@ -153,4 +151,3 @@
     (evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
     (playableCards ?highestValueCard ?topCard)
     (cardValue ?highestValueCard ?greatestValue))
->>>>>>> 1ffc83fc7c710f2a022b26ce17bd796a374e8e07
