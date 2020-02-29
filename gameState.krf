@@ -5,13 +5,13 @@
 
 # TODO end game vs early game
 
-(<== (endGame ?bool)
+(<== (endGame true)
     (and 
         (evaluate ?quantitiesList
             (TheClosedRetrievalSetOf ?num
             (opponentHandSize ?opponent ?num)))
         (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
-        (lessThan ?minQuantity 3)))
+    (lessThan ?minQuantity 3)))
 
 
 

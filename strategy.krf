@@ -1,57 +1,73 @@
 (in-microtheory UnoPlayer)
 
-;; Get card properties
+;; ------------------------------------------------------------
+;; -------------------- Helper functions ----------------------
+;; ------------------------------------------------------------
 
-(<== (cardColor ?card ?col)
-        (isa ?card ?col)
-        (isa ?col PlayingCardColor))
+;; ************ cardColor ***********
+;; Get the color of a card
+(<== (cardColor ?card ?color)
+    (isa ?card ?color)
+    (isa ?color PlayingCardColor))
 
-;; Strategy rules
-
-;; Basic rules
-
-
-;;Compare two cards to determine if they're the same color
-(<==     (sameColor ?card1 ?card2)
+;; ************ sameColor ***********
+;; Compare two cards to determine if they're the same color
+(<== (sameColor ?card1 ?card2)
     (isa ?card1 ?cardColor)
     (isa ?cardColor PlayingCardColor)
     (isa ?card2 ?cardColor))
 
+;; ************ matchingCards ***********
+;; Compare two cards to determine if they match symbols or colors
 
-;;Compare two cards to determine if they have the same number (version 1) or symbol (version 2)
-(<==    (sameSymbol ?card1 ?card2)
+;; check for matching colors
+(<== (matchingCards ?card1 ?card2)
     (isa ?card1 ?number)
     (isa ?number NumberCardType)
     (isa ?card2 ?number))
-(<==    (sameSymbol ?card1 ?card2)
+
+;; *** check for matching symbols
+(<== (matchingCards ?card1 ?card2)
     (isa ?card1 ?symbol)
     (isa ?symbol SpecialCardType)
     (isa ?card2 ?symbol))
 
-
-;;METHOD TO CHECK IF COLOR EXISTS IN HAND (FOR WILD DRAW 4 PLAYING REASONS)
-;;Check to see if any cards in the hand are the same color as the top card
-(<==    (colorInHand ?color ?card)
+;; ************ cardInHandWithColor ***********
+;; Method to get cards in hand that are the same color as the top color
+(<== (cardInHandWithColor ?color ?card)
     (cardState ?card inHandCard)
     (isa ?card ?color))
 
+;; ************ playableCardValues ***********
+;; Method to get the values of all playable cards
+;; used to determine highest value card
+(<== (playableCardValue ?value ?topCard)
+    (playableCards ?card ?topCard)
+    (isa ?card NumberCardType)
+    (cardValue ?card ?value))
 
-;;Check to see playable cards in hand (same color, same number/symbol, wild, or wild draw4 and don't have the color)
-(<==     (playableCards ?card ?topCard)
-    (numberCardsToDraw cardsToDraw ?num)
-    (equals ?num 0)
+;; ------------------------------------------------------------
+;; ----------------------- Basic rules ------------------------
+;; ------------------------------------------------------------
+
+;; ************ playableCards ***********
+;; Function to return all cards in hand that could be played
+
+;; *** check for playable cards with matching color or number
+(<== (playableCards ?card ?topCard)
+    (numberCardsToDraw cardsToDraw ?drawCount)
+    (equals ?drawCount 0)
     (cardState ?card inHandCard)
-    (sameColor ?card ?topCard))
-(<==     (playableCards ?card ?topCard)
-    (numberCardsToDraw cardsToDraw ?num)
-    (equals ?num 0)
-    (cardState ?card inHandCard)
-    (sameSymbol ?card ?topCard))
-(<==     (playableCards ?card ?topCard)
-    (numberCardsToDraw cardsToDraw ?num)
-    (equals ?num 0)
+    (matchingCards ?card ?topCard))
+
+;; *** check for playable wild cards (can always be played)
+;; TODO: store color once its been decided
+(<== (playableCards ?card ?topCard)
+    (numberCardsToDraw cardsToDraw ?drawCount)
+    (equals ?drawCount 0)
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
+<<<<<<< HEAD
 ;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
 ;;(<==    (playableCards ?card ?topCard)
 ;;    (numberCardsToDraw cardsToDraw ?num)
@@ -97,3 +113,44 @@
 ;;;         (TheClosedRetrievalSetOf ?cardValues
 ;;;    (PlayableCardValues ?cardValues green6))))
 ;;;(evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
+=======
+
+;; *** check for playable draw2 cards
+;; case when numberCardsToDraw is > 0
+(<== (playableCards ?card ?topCard)
+    (isa ?topCard Draw2TheCard)
+    (cardState ?card inHandCard)
+    (isa ?card Draw2TheCard))
+
+;; *** check for playable draw4 cards
+;; TODO: store color once its been decided
+(<== (playableCards ?playableWildCard ?topCard)
+    (numberCardsToDraw cardsToDraw ?drawCount)
+    (equals ?drawCount 0)
+    (cardColor ?topCard ?topColor)
+    (and (evaluate ?cardsMatchingTopColorInHand
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?cards
+            (cardInHandWithColor ?topColor ?cards))))
+        (evaluate ?n-cardsMatchingTopColorInHand (LengthOfListFn ?cardsMatchingTopColorInHand))
+        (equals ?n-cardsMatchingTopColorInHand 0)
+        (cardState ?playableWildCard inHandCard)
+        (isa ?playableWildCard WildDraw4TheCard)))
+
+;; ------------------------------------------------------------
+;; ----------------------- Strategic rules --------------------
+;; ------------------------------------------------------------
+
+;; ************ highestValuePlayableCard ***********
+;; Method to get the playable card with the greatest values
+;; could return multiple cards
+;; TODO: come up with tie breaker?
+(<== (highestValuePlayableCard ?highestValueCard ?topCard)
+    (and (evaluate ?playableCardValues
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?cardValues
+                (playableCardValue ?value ?topCard))))
+    (evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
+    (playableCards ?highestValueCard ?topCard)
+    (cardValue ?highestValueCard ?greatestValue))
+>>>>>>> 1ffc83fc7c710f2a022b26ce17bd796a374e8e07
