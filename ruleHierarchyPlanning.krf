@@ -1,274 +1,130 @@
-
-(in-microtheory TravelPlansMt)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(in-microtheory UnoPlayer)
 
 
-;;; If you are less than 2 miles away, walk
+;;;;;;;;;;;;;;;;;;;;;;;;;;; Planning ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;; opponent drew card
+
+;; usage: (opponentDrewCard ?opponent ?quantity)
+
+;;if 1 card was drawn, it means they couldn't play with their hand
 (preconditionForMethod
- (and
-      (distanceBetween ?pointA ?pointB ?distance)
-      (lessThan ?distance 2)
-            
-      )
- (methodForAction
-  (travel ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (walk ?pointA ?pointB))
- 
-    ))))
+    (and
+        (equals ?quantity 1))
+    (methodForAction
+        (opponentDrewCard ?opponent ?quantity)
+        (actionSequence
+            (TheList
+                ;; update quantity of cards
+                (doAgentPlan
+                    (UpdateColorPreferences ?opponent)
+                    (UpdateOpponentHandSize ?opponent ?quantity))))))
 
-
-;;; If you are between 2 and 200 miles away, take a bus
+;;if 2 or more cards were drawn, they got a draw +2 or +4
 (preconditionForMethod
- (and
-      (distanceBetween ?pointA ?pointB ?distance)
-      (greaterThanOrEqualTo ?distance 2)
-      (lessThan ?distance 200)
-            
-      )
- (methodForAction
-  (travel ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (takeBus ?pointA ?pointB))
-     ))))
+    (and
+        (greaterThan ?quantity 1))
+    (methodForAction
+        (opponentDrewCard ?opponent ?quantity)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    ()
+                    ())))))
 
 
-;;; If you are between 200 and 500 miles away, take a train
+;; opponent drew and played
+
+;; self drew card
+
+;; opponent played card
+
+;; self played card
+
+;; ------------------------------------------------------------
+;; -------------------- Update Color Preferences --------------
+;; ------------------------------------------------------------
+
 (preconditionForMethod
- (and
-     ;;; TODO: fill in preconditions (done)
-      (distanceBetween ?pointA ?pointB ?distance)
-      (greaterThanOrEqualTo ?distance 200)
-      (lessThan ?distance 500)
-            
-      )
- (methodForAction
-  (travel ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (takeTrain ?pointA ?pointB))
-     ))))
+    (and
+       	(getTopCardFn ?topCard)
+        (isa ?topCard RedPlayingCard))
+    (methodForAction
+        (UpdateColorPreferences ?opponent)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoAvoid)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
 
-
-;;; If you are more than 500 miles away, fly
 (preconditionForMethod
- (and
-      ;;; TODO: fill in preconditions (done)
-      (distanceBetween ?pointA ?pointB ?distance)
-      (greaterThanOrEqualTo ?distance 500)
-                  )
- (methodForAction
-  (travel ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (fly ?pointA ?pointB))
-     ))))
+    (and
+    	  (getTopCardFn ?topCard)
+        (isa ?topCard BluePlayingCard))
+    (methodForAction
+        (UpdateColorPreferences ?opponent)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoAvoid)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
 
-;;; walk
+
 (preconditionForMethod
- (and
-      (true)
-            
-      )
- (methodForAction
-  (walk ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doRecord (ist-Information MyTravelMt (walk ?pointA ?pointB))
-    
-              )))))
+    (and
+   		  (getTopCardFn ?topCard)
+        (isa ?topCard GreenPlayingCard))
+    (methodForAction
+        (UpdateColorPreferences ?opponent)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoAvoid)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
 
-;;; fly #1; you are not at an airport
 (preconditionForMethod
- (and
-      (closestAirport ?pointA ?airport)
-      (different ?pointA ?airport)
-            
-      )
- (methodForAction
-  (fly ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (travel ?pointA ?airport))
-    (doAgentPlan
-     (travel ?airport ?pointB))
-    
-     ))))
+    (and
+    		(getTopCardFn ?topCard)
+        (isa ?topCard YellowPlayingCard))
+    (methodForAction
+        (UpdateColorPreferences ?opponent)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoAvoid)))))))
 
-;;; fly #2; your endpoint is not an airport
+
+;; ------------------------------------------------------------
+;; -------------------- Update Opponent Hand Size --------------
+;; ------------------------------------------------------------
+
 (preconditionForMethod
- (and
-      (closestAirport ?pointA ?pointA)
-      ;;; TODO: fill in preconditions (done)
-      (closestAirport ?pointB ?airport)
-      (different ?pointB ?airport)
-            
-      )
- (methodForAction
-  (fly ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (fly ?pointA ?airport))
-    (doAgentPlan
-     ;;; TODO: fill in subtask(s) (done)
-     (travel ?airport ?pointB)
-     )
-     ))))
-
-
-;;; fly #3; between airports
-(preconditionForMethod
- (and
-      (closestAirport ?pointA ?pointA)
-      (closestAirport ?pointB ?pointB)
-            
-      )
- (methodForAction
-  (fly ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doRecord (ist-Information MyTravelMt (fly ?pointA ?pointB))
-    
-              )))))
-
-;;; bus #1, you are not at a bus stop
-(preconditionForMethod
- (and
-      (closestBusStop ?pointA ?stop)
-      (different ?pointA ?stop)
-            
-      )
- (methodForAction
-  (takeBus ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     ;;; TODO: fill in subtask (done)
-	(travel ?pointA ?stop)
-     )
-    (doAgentPlan
-     ;;; TODO: fill in subtask (done)
-	(takeBus ?stop ?pointB)
-     )
-    ))))
-
-;;; bus #2, your endpoint is not a bus stop
-(preconditionForMethod
- (and
-      (closestBusStop ?pointA ?pointA)
-      ;;; TODO: fill in preconditions (done)
-      (closestBusStop ?pointB ?stop)
-      (different ?pointB ?stop)
-            
-      )
- (methodForAction
-  (takeBus ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (takeBus ?pointA ?stop))
-    (doAgentPlan
-     (travel ?stop ?pointB))
-    
-     ))))
-
-
-;;; bus #3; between bus stops
-(preconditionForMethod
- (and
-      (closestBusStop ?pointA ?pointA)
-      (closestBusStop ?pointB ?pointB)
-            
-      )
- (methodForAction
-  (takeBus ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doRecord (ist-Information MyTravelMt (takeBus ?pointA ?pointB))
-    
-              )))))
-
-;;; train #1; you are not at a train station
-(preconditionForMethod
- (and
-      ;;; TODO: fill in preconditions (done)
-      (closestTrainStation ?pointA ?station)
-      (different ?pointA ?station)
-            
-      )
- (methodForAction
-  (takeTrain ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (travel ?pointA ?station))
-    (doAgentPlan
-     (travel ?station ?pointB))
-    
-     ))))
-
-;;; train #2; your endpoint is not a train station
-(preconditionForMethod
- (and
-      (closestTrainStation ?pointA ?pointA)
-      (closestTrainStation ?pointB ?station)
-      (different ?pointB ?station)
-            
-      )
- (methodForAction
-  (takeTrain ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doAgentPlan
-     (takeTrain ?pointA ?station))
-    (doAgentPlan
-     (travel ?station ?pointB))
-    
-     ))))
-
-
-;;; train #3; between bus stops
-(preconditionForMethod
- (and
-     ;;; TODO: fill in preconditions
-      (closestTrainStation ?pointA ?pointA)
-      (closestTrainStation ?pointB ?pointB)
-            
-      )
- (methodForAction
-  (takeTrain ?pointA ?pointB)
-  (actionSequence
-   (TheList
-    (doRecord (ist-Information MyTravelMt (takeTrain ?pointA ?pointB))
-    
-              )))))
-
-
-
-
-;;(fly BeijingTerminal LosAngelesAirport)
-;;(takeBus BaodingStation BeijingTerminal)
-;;(takeBus SanFranciscoStation CarmelByTheSeaBusStop)
-;;(takeTrain LosAngelesTrainStation SanFranciscoStation)
-;;(takeTrain YantaiTrainStation BaodingStation)
-;;(walk CarmelByTheSeaBusStop CarmelHotel)
-;;(walk LosAngelesAirport LosAngelesTrainStation)
-;;(walk YantaiHotel YantaiTrainStation)
-
-
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; End of Code
+    (and
+       	(true))
+    (methodForAction
+        (UpdateOpponentHandSize ?opponent ?quantity)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
+              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent (plusFn ?quantity ?currentSize))))))))
