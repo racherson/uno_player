@@ -15,10 +15,9 @@
         (opponentDrewCard ?opponent ?quantity)
         (actionSequence
             (TheList
-                ;; update quantity of cards
                 (doAgentPlan
                     (UpdateColorPreferences ?opponent)
-                    (UpdateOpponentHandSize ?opponent ?quantity))))))
+                    (IncreaseOpponentHandSize ?opponent ?quantity))))))
 
 ;;if 2 or more cards were drawn, they got a draw +2 or +4
 (preconditionForMethod
@@ -29,17 +28,55 @@
         (actionSequence
             (TheList
                 (doAgentPlan
-                    ()
-                    ())))))
+                    (IncreaseOpponentHandSize ?opponent ?quantity))))))
 
 
 ;; opponent drew and played
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (opponentDrewAndPlayed ?opponent ?quantity)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    ())))))
 
-;; self drew card
+;;;;;;;;;;;;;;;;;;; self drew card
+;; update in hand state
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (selfDrewCard ?card)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information UnoPlayer (cardState ?card unseenCard)))
+                (doRecord (ist-Information UnoPlayer (cardState ?card inHandCard)))))))
 
+;;;;;;;;;;;;;;;;;;; Played a Card
 ;; opponent played card
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (opponentPlayedCard ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (DecreaseOpponentHandSize ?opponent 1)
+                    ())))))
 
 ;; self played card
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (selfPlayedCard ?card)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information UnoPlayer (cardState ?card inHandCard)))
+                (doRecord (ist-Information UnoPlayer (cardState ?card discardedCard)))))))
 
 ;; ------------------------------------------------------------
 ;; -------------------- Update Color Preferences --------------
@@ -123,8 +160,18 @@
     (and
        	(true))
     (methodForAction
-        (UpdateOpponentHandSize ?opponent ?quantity)
+        (IncreaseOpponentHandSize ?opponent ?quantity)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
               (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent (plusFn ?quantity ?currentSize))))))))
+
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (DecreaseOpponentHandSize ?opponent ?quantity)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
+              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent (minusFn ?quantity ?currentSize))))))))
