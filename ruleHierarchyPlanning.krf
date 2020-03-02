@@ -16,7 +16,7 @@
         (actionSequence
             (TheList
                 (doAgentPlan
-                    (UpdateColorPreferences ?opponent)
+                    (UpdateColorPreferencesDrewCard ?opponent)
                     (IncreaseOpponentHandSize ?opponent ?quantity))))))
 
 ;;if 2 or more cards were drawn, they got a draw +2 or +4
@@ -40,7 +40,7 @@
         (actionSequence
             (TheList
                 (doAgentPlan
-                    ())))))
+                    ()))))) ;;; what happens??
 
 ;;;;;;;;;;;;;;;;;;; self drew card
 ;; update in hand state
@@ -65,7 +65,7 @@
             (TheList
                 (doAgentPlan
                     (DecreaseOpponentHandSize ?opponent 1)
-                    ())))))
+                    (UpdateColorPreferencesPlayedCard ?opponent ?card))))))
 
 ;; self played card
 (preconditionForMethod
@@ -87,7 +87,7 @@
        	(getTopCardFn ?topCard)
         (isa ?topCard RedPlayingCard))
     (methodForAction
-        (UpdateColorPreferences ?opponent)
+        (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
@@ -104,7 +104,7 @@
     	  (getTopCardFn ?topCard)
         (isa ?topCard BluePlayingCard))
     (methodForAction
-        (UpdateColorPreferences ?opponent)
+        (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
@@ -122,7 +122,7 @@
    		  (getTopCardFn ?topCard)
         (isa ?topCard GreenPlayingCard))
     (methodForAction
-        (UpdateColorPreferences ?opponent)
+        (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
@@ -139,7 +139,7 @@
     		(getTopCardFn ?topCard)
         (isa ?topCard YellowPlayingCard))
     (methodForAction
-        (UpdateColorPreferences ?opponent)
+        (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
@@ -150,6 +150,16 @@
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoAvoid)))))))
+
+(preconditionForMethod
+    (and
+        (isa ?card ?cardColor))
+    (methodForAction
+        (UpdateColorPreferencesPlayedCard ?opponent ?card)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoPreferred)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
 
 ;; ------------------------------------------------------------
