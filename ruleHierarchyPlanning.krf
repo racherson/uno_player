@@ -168,20 +168,22 @@
 
 (preconditionForMethod
     (and
-       	(true))
+        (opponentHandSize ?opponent ?currentSize)
+       	(evaluate ?newSize (PlusFn ?quantity ?currentSize)))
     (methodForAction
         (IncreaseOpponentHandSize ?opponent ?quantity)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
-              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent (plusFn ?quantity ?currentSize))))))))
+              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
 
 (preconditionForMethod
     (and
-        (true))
+        (opponentHandSize ?opponent ?currentSize)
+        (evaluate ?newSize (DifferenceFn ?quantity ?currentSize)))
     (methodForAction
         (DecreaseOpponentHandSize ?opponent ?quantity)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
-              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent (minusFn ?quantity ?currentSize))))))))
+              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
