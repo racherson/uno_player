@@ -8,7 +8,7 @@
 ;; ------------------------------------------------------------
 
 (<== (endGame true)
-    (and 
+    (and
         (evaluate ?quantitiesList
             (TheClosedRetrievalSetOf ?num
             (opponentHandSize ?opponent ?num)))
@@ -40,7 +40,7 @@
 ; track top card
 ; usage: (getTopCard ?topCard)
 ; returns a card entity (e.g. red7)
-
+(getTopCard red7)
 
 
 
@@ -50,7 +50,7 @@
 
 ;; relation connecting number value to number of cards to draw
 (isa numberCardsToDraw BinaryPredicate)
-(genlPreds numberCardsToDraw number)  
+(genlPreds numberCardsToDraw number)
 (arity numberCardsToDraw 2)
 (arg1Isa numberCardsToDraw Number)
 (arg2Isa numberCardsToDraw ScalarInterval)
