@@ -1,0 +1,37 @@
+
+
+(in-microtheory UnoPlayer)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(isa opponentDrewCard ComplexActionPredicate)
+(arity opponentDrewCard 2)
+
+(isa opponentPlayedCard Predicate)
+(arity opponentPlayedCard 2)
+
+(isa opponentDrewAndPlayed ComplexActionPredicate)
+(arity opponentDrewAndPlayed 2)
+
+(isa selfDrewCard ComplexActionPredicate)
+(arity selfDrewCard 1)
+
+(isa selfPlayedCard Predicate)
+(arity selfPlayedCard 1)
+
+(isa UpdateColorPreferencesDrewCard ComplexActionPredicate)
+(arity UpdateColorPreferencesDrewCard 1)
+
+(isa UpdateColorPreferencesPlayedCard Predicate)
+(arity UpdateColorPreferencesPlayedCard 2)
+
+(isa IncreaseOpponentHandSize ComplexActionPredicate)
+(arity IncreaseOpponentHandSize 2)
+
+(isa DecreaseOpponentHandSize ComplexActionPredicate)
+(arity DecreaseOpponentHandSize 2)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; End of Code
