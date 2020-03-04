@@ -8,18 +8,16 @@
 ;; ------------------------------------------------------------
 
 (<== (endGame true)
-    (and 
+    (and
         (evaluate ?quantitiesList
             (TheClosedRetrievalSetOf ?num
             (opponentHandSize ?opponent ?num)))
         (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
     	(lessThan ?minQuantity 3)))
 
+;; TODO direction
 
-
-# TODO direction
-
-# TODO track top card
+;; TODO track top card
 
 
 ;; ------------------------------------------------------------
@@ -28,7 +26,7 @@
 
 ;; relation connecting number value to number of cards to draw
 (isa numberCardsToDraw BinaryPredicate)
-(genlPreds numberCardsToDraw number)  
+(genlPreds numberCardsToDraw number)
 (arity numberCardsToDraw 2)
 (arg1Isa numberCardsToDraw Number)
 (arg2Isa numberCardsToDraw ScalarInterval)
