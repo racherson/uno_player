@@ -175,7 +175,7 @@
         (UpdateColorPreferencesPlayedCard ?opponent ?card)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor pref)))
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
 
