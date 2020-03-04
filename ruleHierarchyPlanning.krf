@@ -119,7 +119,7 @@
 
 (preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
-       	(getTopCard ?topCard)
+       	(getTopCard gameState ?topCard)
         (isa ?topCard RedPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -140,7 +140,7 @@
 
 (preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
-    	(getTopCard ?topCard)
+    	(getTopCard gameState ?topCard)
         (isa ?topCard BluePlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -162,7 +162,7 @@
 
 (preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
-   		(getTopCard ?topCard)
+   		(getTopCard gameState ?topCard)
         (isa ?topCard GreenPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -183,7 +183,7 @@
 
 (preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
-    	(getTopCard ?topCard)
+    	(getTopCard gameState ?topCard)
         (isa ?topCard YellowPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -259,12 +259,12 @@
 
 (preconditionForMethod
     (and
-        (getTopCard ?topCard))
+        (getTopCard gameState ?topCard))
     (methodForAction
         (ChangeTopCard ?card)
         (actionSequence
             (TheList
-              (doForget (ist-Information UnoPlayer (getTopCard ?topCard)))
+              (doForget (ist-Information UnoPlayer (getTopCard gameState ?topCard)))
               (doRecord (ist-Information UnoPlayer (getTopCard ?card)))))))
 
 ;; ------------------------------------------------------------
@@ -273,9 +273,9 @@
 
 (preconditionForMethod
     (and
-        (getTopCard ?topCard))
+        (getTopCard gameState ?topCard))
     (methodForAction
         (InitializeGame ?topCard ?card1 ?card2 ?card3 ?card4 ?card5 ?card6 ?card7)
         (actionSequence
             (TheList
-              (doRecord (ist-Information UnoPlayer (getTopCard ?topCard))))))) ;;;;;;;;; TODO: set 7 cards to be in hand cards
+              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?topCard))))))) ;;;;;;;;; TODO: set 7 cards to be in hand cards
