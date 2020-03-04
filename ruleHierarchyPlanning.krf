@@ -119,8 +119,8 @@
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
-              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoAvoid)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoAvoid)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
 
