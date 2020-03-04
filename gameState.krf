@@ -25,9 +25,9 @@
 (genls UnoGameState ExistingObjectType)
 (comment UnoGameState "Collection of states for Uno game")
 
-(isa UnoDirection ClarifyingCollectionType)
-(genls UnoDirection ExistingObjectType)
-(comment UnoDirection "Collection of directions turns may follow for players in Uno")
+(isa UnoDirection KBDependentCollection)
+(genls UnoDirection Direction)
+(comment UnoDirection "Collection of directions for player turns in Uno")
 
 (isa unoClockwise UnoDirection)
 (comment unoClockwise "Player turns flow clockwise, meaning self > opponent 1 > opponent 2 > opponent3")
@@ -35,11 +35,12 @@
 (isa unoCounterClockwise UnoDirection)
 (comment unoCounterClockwise "Player turns flow counter clockwise, meaning opponent 3 > opponent 2 > opponent1 > self")
 
-;;(isa gameDirection BinaryPredicate)
-;;(arity gameDirection 2)
-;;(arg1Isa gameDirection UnoGameState)
-;;(arg2Isa gameDirection UnoDirection)
-;;(comment gameDirection "A relation connecting an uno game to the direction of player's turns")
+(isa gameDirection BinaryPredicate)
+(arity gameDirection 2)
+(arg1Isa gameDirection UnoGameState)
+(arg2Isa gameDirection UnoDirection)
+(comment gameDirection "A relation connecting an uno game to the direction of players turns")
+
 
 (isa getTopCard BinaryPredicate)
 (arity getTopCard 2)
@@ -47,16 +48,10 @@
 (arg2Isa getTopCard PlayingCard)
 (comment getTopCard "A relation connecting an uno game to the top card in the discard pile")
 
-(isa getTopCard2 BinaryPredicate)
-(arity getTopCard2 2)
-(arg1Isa getTopCard2 UnoGameState)
-(arg2Isa getTopCard2 PlayingCard)
-(comment getTopCard2 "A relation connecting an uno game to the top card in the discard pile")
-
 
 (isa gameState UnoGameState)
-;;(gameDirection gameState unoClockwise)
 (comment gameState "The state of the current uno game, including top card and turn direction. Initialized to clockwise.")
+(gameDirection gameState unoClockwise)
 
 
 ;; ------------------------------------------------------------
@@ -64,14 +59,16 @@
 ;; ------------------------------------------------------------
 
 ;; relation connecting number value to number of cards to draw
-;(isa numberCardsToDraw BinaryPredicate)
-;(genlPreds numberCardsToDraw number)
-;(arity numberCardsToDraw 2)
-;(arg1Isa numberCardsToDraw Number)
-;(arg2Isa numberCardsToDraw ScalarInterval)
-;(comment numberCardsToDraw "A relation stating how many cards need to be drawn at a given point in the game")
+(isa numberCardsToDraw BinaryPredicate)
+(genlPreds numberCardsToDraw number)
+(arity numberCardsToDraw 2)
+(arg1Isa numberCardsToDraw Number)
+(arg2Isa numberCardsToDraw ScalarInterval)
+(comment numberCardsToDraw "A relation stating how many cards need to be drawn at a given point in the game")
 
 ;; entity representing the number of cards the current player must draw
-;(isa cardsToDraw Number)
-;(comment cardsToDraw "Number of cards the current player needs to draw, unless there is a special play")
+(isa cardsToDraw Number)
+(comment cardsToDraw "Number of cards the current player needs to draw, unless there is a special play")
 ;(numberCardsToDraw cardsToDraw 0)
+
+
