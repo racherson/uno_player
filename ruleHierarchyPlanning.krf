@@ -85,15 +85,19 @@
 (preconditionForMethod
     (and
        	(getTopCardFn ?topCard)
-        (isa ?topCard RedPlayingCard))
+        (isa ?topCard RedPlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
     (methodForAction
         (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoAvoid)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
@@ -102,15 +106,19 @@
 (preconditionForMethod
     (and
     	  (getTopCardFn ?topCard)
-        (isa ?topCard BluePlayingCard))
+        (isa ?topCard BluePlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
     (methodForAction
         (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoAvoid)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
@@ -120,15 +128,19 @@
 (preconditionForMethod
     (and
    		  (getTopCardFn ?topCard)
-        (isa ?topCard GreenPlayingCard))
+        (isa ?topCard GreenPlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
     (methodForAction
         (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoAvoid)))
@@ -137,15 +149,19 @@
 (preconditionForMethod
     (and
     		(getTopCardFn ?topCard)
-        (isa ?topCard YellowPlayingCard))
+        (isa ?topCard YellowPlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
     (methodForAction
         (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?pref)))
-              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?pref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
@@ -153,12 +169,13 @@
 
 (preconditionForMethod
     (and
-        (isa ?card ?cardColor))
+        (isa ?card ?cardColor)
+        (colorPreference ?opponent ?cardColor ?pref))
     (methodForAction
         (UpdateColorPreferencesPlayedCard ?opponent ?card)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoPreferred)))
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor pref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
 
