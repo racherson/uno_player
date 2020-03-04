@@ -1,7 +1,0 @@
-;;initialize hand
-(cardState green2 inHandCard)
-(cardState green4 inHandCard)
-(cardState yellow4 inHandCard)
-(cardState green9 inHandCard)
-(cardState greendraw2 inHandCard)
-
