@@ -16,7 +16,8 @@
         (actionSequence
             (TheList
                 (doAgentPlan
-                    (UpdateColorPreferencesDrewCard ?opponent)
+                    (UpdateColorPreferencesDrewCard ?opponent))
+                (doAgentPlan
                     (IncreaseOpponentHandSize ?opponent ?quantity))))))
 
 ;;if 2 or more cards were drawn, they got a draw +2 or +4
@@ -60,12 +61,32 @@
     (and
         (true))
     (methodForAction
-        (opponentPlayedCard ?card)
+        (opponentPlayedCard ?opponent ?card)
         (actionSequence
             (TheList
                 (doAgentPlan
-                    (DecreaseOpponentHandSize ?opponent 1)
+                    (DecreaseOpponentHandSize ?opponent 1))
+                (doAgentPlan
                     (UpdateColorPreferencesPlayedCard ?opponent ?card))))))
+
+;; opponent played wild card and requested a color
+(preconditionForMethod
+    (and
+        (isa ?color ?cardColor)
+        (isa ?cardColor PlayingCardColor)
+        (isa ?wildColorCard WildColor)
+        (isa ?wildColorCard ?cardColor))
+    (methodForAction
+        (opponentPlayedWildCard ?opponent ?color)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (DecreaseOpponentHandSize ?opponent 1))
+                (doAgentPlan
+                    (UpdateColorPreferencesPlayedWildCard ?opponent ?wildColorCard))
+                (doAgentPlan
+                    (UpdateTopCard ?wildColorCard))))))
+
 
 ;; self played card
 (preconditionForMethod
@@ -170,6 +191,7 @@
 (preconditionForMethod
     (and
         (isa ?card ?cardColor)
+        (isa ?cardColor PlayingCardColor)
         (colorPreference ?opponent ?cardColor ?pref))
     (methodForAction
         (UpdateColorPreferencesPlayedCard ?opponent ?card)
@@ -178,9 +200,21 @@
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
+(preconditionForMethod
+    (and
+        (isa ?wildCardColor ?cardColor)
+        (isa ?cardColor PlayingCardColor)
+        (colorPreference ?opponent ?cardColor ?pref))
+    (methodForAction
+        (UpdateColorPreferencesPlayedWildCard ?opponent ?wildCardColor)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoPreferred)))))))
+
 
 ;; ------------------------------------------------------------
-;; -------------------- Update Opponent Hand Size --------------
+;; -------------------- Update Opponent Hand Size -------------
 ;; ------------------------------------------------------------
 
 (preconditionForMethod
@@ -197,10 +231,24 @@
 (preconditionForMethod
     (and
         (opponentHandSize ?opponent ?currentSize)
-        (evaluate ?newSize (DifferenceFn ?quantity ?currentSize)))
+        (evaluate ?newSize (DifferenceFn ?currentSize ?quantity)))
     (methodForAction
         (DecreaseOpponentHandSize ?opponent ?quantity)
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
               (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
+
+;; ------------------------------------------------------------
+;; -------------------- Update Top Card -----------------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (getTopCardFn ?topCard))
+    (methodForAction
+        (UpdateTopCard ?card)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (topCard ?topCard))) ;;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO
+              (doRecord (ist-Information UnoPlayer (topCard ?card))))))) ;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO

@@ -99,6 +99,7 @@
 (genls WildDraw4TheCard PlayingCard)
 (comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild draw 4'")
 
+
 ;; collection for the state of the card
 
 (isa CardState KBDependentCollection)
@@ -463,3 +464,19 @@
 (isa wildDraw4 WildDraw4TheCard)
 (comment wildDraw4 "The UNO playing card with the special ability to change the suit to the user's choice and make the next player draw four cards in place of their turn")
 (cardState wildDraw4 unseenCard)
+
+(isa wildRed WildColor)
+(isa wildRed RedPlayingCard)
+(commend wildRed "The UNO playing card that is the generic red color after a wild card is played")
+
+(isa wildGreen WildColor)
+(isa wildGreen GreenPlayingCard)
+(commend wildRed "The UNO playing card that is the generic green color after a wild card is played")
+
+(isa wildBlue WildColor)
+(isa wildBlue BluePlayingCard)
+(commend wildBlue "The UNO playing card that is the generic blue color after a wild card is played")
+
+(isa wildYellow WildColor)
+(isa wildYellow YellowPlayingCard)
+(commend wildYellow "The UNO playing card that is the generic yellow color after a wild card is played")
