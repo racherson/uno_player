@@ -1,4 +1,5 @@
 (in-microtheory UnoPlayer)
+(genlMt Session-ReasonerPlanMt UnoPlayer)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; Planning ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -21,7 +22,7 @@
                     (IncreaseOpponentHandSize ?opponent ?quantity))))))
 
 ;;if 2 or more cards were drawn, they got a draw +2 or +4
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (greaterThan ?quantity 1))
     (methodForAction
@@ -45,7 +46,7 @@
 
 ;;;;;;;;;;;;;;;;;;; self drew card
 ;; update in hand state
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (true))
     (methodForAction
@@ -89,7 +90,7 @@
 
 
 ;; self played card
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (true))
     (methodForAction
@@ -217,7 +218,7 @@
 ;; -------------------- Update Opponent Hand Size -------------
 ;; ------------------------------------------------------------
 
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (opponentHandSize ?opponent ?currentSize)
        	(evaluate ?newSize (PlusFn ?quantity ?currentSize)))
@@ -228,7 +229,7 @@
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
               (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
 
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (opponentHandSize ?opponent ?currentSize)
         (evaluate ?newSize (DifferenceFn ?currentSize ?quantity)))
