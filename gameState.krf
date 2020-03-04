@@ -1,4 +1,4 @@
-;; Game state information (e.g. close to end of game, player turn direction)
+;; Game state information 
 
 (in-microtheory UnoPlayer)
 
@@ -13,7 +13,7 @@
             (TheClosedRetrievalSetOf ?num
             (opponentHandSize ?opponent ?num)))
         (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
-    (lessThan ?minQuantity 3)))
+    	(lessThan ?minQuantity 3)))
 
 ;; TODO direction
 

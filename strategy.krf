@@ -20,7 +20,7 @@
 ;; ************ matchingCards ***********
 ;; Compare two cards to determine if they match symbols or colors
 
-;; check for matching colors
+;; check for matching numbers
 (<== (matchingCards ?card1 ?card2)
     (isa ?card1 ?number)
     (isa ?number NumberCardType)
@@ -32,13 +32,17 @@
     (isa ?symbol SpecialCardType)
     (isa ?card2 ?symbol))
 
+;; *** check for same color
+(<== (matchingCards ?card1 ?card2)
+	(sameColor ?card1 ?card2))
+
 ;; ************ cardInHandWithColor ***********
 ;; Method to get cards in hand that are the same color as the top color
 (<== (cardInHandWithColor ?color ?card)
     (cardState ?card inHandCard)
     (isa ?card ?color))
 
-;; ************ playableCardValues ***********
+;; ************ playableCardValue ***********
 ;; Method to get the values of all playable cards
 ;; used to determine highest value card
 (<== (playableCardValue ?value ?topCard)
@@ -67,51 +71,6 @@
     (equals ?drawCount 0)
     (cardState ?card inHandCard)
     (isa ?card WildTheCard))
-;;TO DO: METHOD TO CHECK IF CAN PLAY A WILD DRAW 4 BASED ON WHETHER PLAYED COLOR EXISTS IN HAND
-;;(<==    (playableCards ?card ?topCard)
-;;    (numberCardsToDraw cardsToDraw ?num)
-;;    (equals ?num 0)
-;;    (cardState ?card inHandCard)
-;;    (isa ?card wildDraw4)
-;;    )
-(<==    (playableCards ?card ?topCard)
-    (isa ?topCard Draw2TheCard)
-    (haveDraw2Card ?card))
-
-
-;; CONSIDERATIONS:
-;; 1. How to check if a color is in the hand so know if can play a wild draw 4
-;; 2. For playable cards, if a Draw 2 was played must play a Draw 2 or just pick
-
-(<==    (haveDraw2Card ?card)
-    (cardState ?card inHandCard)
-    (isa ?card Draw2TheCard))
-
-
-;;method to get greatest playable card
-
-(<==    (greatestPlayableCard ?greatestCard ?topCard)
-    (and (evaluate ?availableCardValues
-          (SetToListFn
-           (TheClosedRetrievalSetOf ?cardValues
-            (PlayableCardValues ?cardValues ?topCard))))
-    (evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
-    (playableCards ?greatestCard ?topCard)
-    (cardValue ?greatestCard ?topValue))
-
-;;method to get values of playable cards
-
-(<==    (PlayableCardValues ?v1 ?topCard)
-    (playableCards ?card1 ?topCard)
-    (isa ?card1 NumberCardType)
-    (cardValue ?card1 ?v1))
-
-
-;;;(and (evaluate ?availableCardValues
-;;;         (SetToListFn
-;;;         (TheClosedRetrievalSetOf ?cardValues
-;;;    (PlayableCardValues ?cardValues green6))))
-;;;(evaluate ?topValue (MaximumFn ?availableCardValues IdentityFn)))
 
 ;; *** check for playable draw2 cards
 ;; case when numberCardsToDraw is > 0
@@ -128,8 +87,7 @@
     (cardColor ?topCard ?topColor)
     (and (evaluate ?cardsMatchingTopColorInHand
         (SetToListFn
-            (TheClosedRetrievalSetOf ?cards
-            (cardInHandWithColor ?topColor ?cards))))
+            (TheClosedRetrievalSetOf ?cards (cardInHandWithColor ?topColor ?cards))))
         (evaluate ?n-cardsMatchingTopColorInHand (LengthOfListFn ?cardsMatchingTopColorInHand))
         (equals ?n-cardsMatchingTopColorInHand 0)
         (cardState ?playableWildCard inHandCard)
