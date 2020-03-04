@@ -127,7 +127,7 @@
 
 (preconditionForMethod
     (and
-    	  (getTopCardFn ?topCard)
+    	(getTopCardFn ?topCard)
         (isa ?topCard BluePlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -137,7 +137,7 @@
         (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
@@ -149,7 +149,7 @@
 
 (preconditionForMethod
     (and
-   		  (getTopCardFn ?topCard)
+   		(getTopCardFn ?topCard)
         (isa ?topCard GreenPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -170,7 +170,7 @@
 
 (preconditionForMethod
     (and
-    		(getTopCardFn ?topCard)
+    	(getTopCardFn ?topCard)
         (isa ?topCard YellowPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -199,7 +199,7 @@
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
-              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
+                (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
 (preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
@@ -211,7 +211,7 @@
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
-              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoPreferred)))))))
+                (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoPreferred)))))))
 
 
 ;; ------------------------------------------------------------
@@ -227,7 +227,7 @@
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
-              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
+                (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
 
 (preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
@@ -238,7 +238,7 @@
         (actionSequence
             (TheList
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
-              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
+                (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
 
 ;; ------------------------------------------------------------
 ;; -------------------- Update Top Card -----------------------
@@ -251,5 +251,5 @@
         (UpdateTopCard ?card)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (topCard ?topCard))) ;;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO
+              (doForget (ist-Information UnoPlayer (topCard ?topCard))) ;;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO
               (doRecord (ist-Information UnoPlayer (topCard ?card))))))) ;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO
