@@ -58,7 +58,7 @@
 
 ;;;;;;;;;;;;;;;;;;; Played a Card
 ;; opponent played card
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (true))
     (methodForAction
@@ -189,7 +189,7 @@
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoAvoid)))))))
 
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (isa ?card ?cardColor)
         (isa ?cardColor PlayingCardColor)
@@ -201,7 +201,7 @@
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
-(preconditionForMethod
+(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
     (and
         (isa ?wildCardColor ?cardColor)
         (isa ?cardColor PlayingCardColor)
