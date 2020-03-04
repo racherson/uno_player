@@ -20,7 +20,7 @@
 ;; ************ matchingCards ***********
 ;; Compare two cards to determine if they match symbols or colors
 
-;; check for matching colors
+;; check for matching numbers
 (<== (matchingCards ?card1 ?card2)
     (isa ?card1 ?number)
     (isa ?number NumberCardType)
