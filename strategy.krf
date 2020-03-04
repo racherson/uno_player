@@ -47,7 +47,6 @@
 ;; used to determine highest value card
 (<== (playableCardValue ?value ?topCard)
     (playableCards ?card ?topCard)
-    (isa ?card NumberCardType)
     (cardValue ?card ?value))
 
 ;; ------------------------------------------------------------
@@ -62,7 +61,7 @@
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)
     (cardState ?card inHandCard)
-    (matchingCards ?card ?topCard))
+    (matchingCards ?topCard ?card))
 
 ;; *** check for playable wild cards (can always be played)
 ;; TODO: store color once its been decided
@@ -89,9 +88,9 @@
         (SetToListFn
             (TheClosedRetrievalSetOf ?cards (cardInHandWithColor ?topColor ?cards))))
         (evaluate ?n-cardsMatchingTopColorInHand (LengthOfListFn ?cardsMatchingTopColorInHand))
-        (equals ?n-cardsMatchingTopColorInHand 0)
-        (cardState ?playableWildCard inHandCard)
-        (isa ?playableWildCard WildDraw4TheCard)))
+        (equals ?n-cardsMatchingTopColorInHand 0))
+    (cardState ?playableWildCard inHandCard)
+    (isa ?playableWildCard WildDraw4TheCard))
 
 ;; ------------------------------------------------------------
 ;; ----------------------- Strategic rules --------------------
@@ -104,8 +103,8 @@
 (<== (highestValuePlayableCard ?highestValueCard ?topCard)
     (and (evaluate ?playableCardValues
         (SetToListFn
-            (TheClosedRetrievalSetOf ?cardValues
+            (TheClosedRetrievalSetOf ?value
                 (playableCardValue ?value ?topCard))))
-    (evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
+    	(evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
     (playableCards ?highestValueCard ?topCard)
     (cardValue ?highestValueCard ?greatestValue))
