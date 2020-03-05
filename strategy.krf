@@ -49,6 +49,75 @@
     (playableCards ?card ?topCard)
     (cardValue ?card ?value))
 
+;; ************ countOfMostCommonColorInHand ***********
+;; Method to get the count of the color that you have the most of for purpose of wildcards/switching colors
+(<== (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+   	(and (evaluate ?redCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?redCards (cardInHandWithColor RedPlayingCard ?redCards))))
+        (evaluate ?n-redCardList
+        	(LengthOfListFn ?redCardList)))
+	(and (evaluate ?yellowCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?yellowCards (cardInHandWithColor YellowPlayingCard ?yellowCards))))
+        (evaluate ?n-yellowCardList
+        	(LengthOfListFn ?yellowCardList)))
+    (and (evaluate ?greenCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?greenCards (cardInHandWithColor GreenPlayingCard ?greenCards))))
+        (evaluate ?n-greenCardList
+        	(LengthOfListFn ?greenCardList)))
+    (and (evaluate ?blueCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?blueCards (cardInHandWithColor BluePlayingCard ?blueCards))))
+        (evaluate ?n-blueCardList
+            (LengthOfListFn ?blueCardList)))
+    (evaluate ?countOfCardsWithMostFrequentColor 
+    	(MaximumFn (TheList ?n-redCardList ?n-yellowCardList ?n-blueCardList ?n-greenCardList) IdentityFn)))
+
+;; ************ mostCommonColorInHand ***********
+;; Method to get the color that you have the most of for purpose of wildcards/switching colors
+;; *** check if you have the most red cards
+(<== (mostCommonColorInHand RedPlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?redCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?redCards (cardInHandWithColor RedPlayingCard ?redCards))))
+        (evaluate ?n-redCardList
+            (LengthOfListFn ?redCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-redCardList))
+
+;; *** check if you have the most yellow cards
+(<== (mostCommonColorInHand YellowPlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?yellowCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?yellowCards (cardInHandWithColor YellowPlayingCard ?yellowCards))))
+        (evaluate ?n-yellowCardList
+            (LengthOfListFn ?yellowCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-ryellowCardList))
+
+;; *** check if you have the most green cards
+(<== (mostCommonColorInHand GreenPlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?greenCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?greenCards (cardInHandWithColor GreenPlayingCard ?greenCards))))
+        (evaluate ?n-greenCardList
+            (LengthOfListFn ?greenCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-greenCardList))
+
+;; *** check if you have the most blue cards
+(<== (mostCommonColorInHand BluePlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?blueCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?blueCards (cardInHandWithColor BluePlayingCard ?blueCards))))
+        (evaluate ?n-blueCardList
+            (LengthOfListFn ?blueCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-blueCardList))
+
+
 ;; ------------------------------------------------------------
 ;; ----------------------- Basic rules ------------------------
 ;; ------------------------------------------------------------
@@ -56,7 +125,7 @@
 ;; ************ playableCards ***********
 ;; Function to return all cards in hand that could be played
 
-;; *** check for playable cards with matching color or number
+;; *** check for playable cards with matching color or number or symbol
 (<== (playableCards ?card ?topCard)
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)
@@ -87,7 +156,8 @@
     (and (evaluate ?cardsMatchingTopColorInHand
         (SetToListFn
             (TheClosedRetrievalSetOf ?cards (cardInHandWithColor ?topColor ?cards))))
-        (evaluate ?n-cardsMatchingTopColorInHand (LengthOfListFn ?cardsMatchingTopColorInHand))
+        (evaluate ?n-cardsMatchingTopColorInHand
+        	(LengthOfListFn ?cardsMatchingTopColorInHand))
         (equals ?n-cardsMatchingTopColorInHand 0))
     (cardState ?playableWildCard inHandCard)
     (isa ?playableWildCard WildDraw4TheCard))
@@ -108,3 +178,10 @@
     	(evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
     (playableCards ?highestValueCard ?topCard)
     (cardValue ?highestValueCard ?greatestValue))
+
+
+;; ************ pickWildCardColorEarlyGame ***********
+;; Method to pick which color to switch to if it is early in the game
+;; only considers own preferences
+(<== (pickWildCardColorEarlyGame ?color)
+	(mostCommonColorInHand ?color))
