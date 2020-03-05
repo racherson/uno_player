@@ -41,6 +41,9 @@
 (isa UpdateTopCard ComplexActionPredicate)
 (arity UpdateTopCard 1)
 
+(isa UpdateDirection ComplexActionPredicate)
+(arity UpdateDirection 0)
+
 (isa Discard ComplexActionPredicate)
 (arity Discard 1)
 

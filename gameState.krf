@@ -7,13 +7,13 @@
 ;; -------------------- End vs Early Game ---------------------
 ;; ------------------------------------------------------------
 
-;;(<== (endGame true)
-;;    (and
-;;        (evaluate ?quantitiesList
-;;            (TheClosedRetrievalSetOf ?num
-;;            (opponentHandSize ?opponent ?num)))
-;;        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
-;;        (lessThan ?minQuantity 3)))
+(<== (endGame true)
+    (and
+        (evaluate ?quantitiesList
+            (TheClosedRetrievalSetOf ?num
+            (opponentHandSize ?opponent ?num)))
+        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
+        (lessThan ?minQuantity 3)))
 
 
 
@@ -34,6 +34,10 @@
 
 (isa unoCounterClockwise UnoDirection)
 (comment unoCounterClockwise "Player turns flow counter clockwise, meaning opponent 3 > opponent 2 > opponent1 > self")
+
+; relate clockwise and counterclockwise as opposites to switch between them more easily
+(opposite unoClockwise unoCounterClockwise)
+(opposite unoCounterClockwise unoClockwise)
 
 (isa gameDirection BinaryPredicate)
 (arity gameDirection 2)

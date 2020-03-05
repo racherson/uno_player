@@ -268,6 +268,24 @@
               (doRecord (ist-Information UnoPlayer (getTopCard gameState ?card)))))))
 
 ;; ------------------------------------------------------------
+;; -------------------- Change Direction ----------------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (gameDirection gameState ?direction)
+        (opposite ?direction ?oppositeDirection))
+    (methodForAction
+        (UpdateDirection)
+        (actionSequence
+            (TheList
+              (doForget (ist-Information UnoPlayer (gameDirection gameState ?direction)))
+              (doRecord (ist-Information UnoPlayer (gameDirection gameState ?oppositeDirection)))))))
+
+
+
+
+;; ------------------------------------------------------------
 ;; -------------------- Initialize Game -----------------------
 ;; ------------------------------------------------------------
 
@@ -279,6 +297,7 @@
         (actionSequence
             (TheList
               (doRecord (ist-Information UnoPlayer (getTopCard gameState ?topCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?topCard unseenCard)))
               (doForget (ist-Information UnoPlayer (cardState ?card1 unseenCard)))
               (doForget (ist-Information UnoPlayer (cardState ?card2 unseenCard)))
               (doForget (ist-Information UnoPlayer (cardState ?card3 unseenCard)))
@@ -286,6 +305,7 @@
               (doForget (ist-Information UnoPlayer (cardState ?card5 unseenCard)))
               (doForget (ist-Information UnoPlayer (cardState ?card6 unseenCard)))
               (doForget (ist-Information UnoPlayer (cardState ?card7 unseenCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?topCard discardedCard)))
               (doRecord (ist-Information UnoPlayer (cardState ?card1 inHandCard)))
               (doRecord (ist-Information UnoPlayer (cardState ?card2 inHandCard)))
               (doRecord (ist-Information UnoPlayer (cardState ?card3 inHandCard)))
