@@ -1,19 +1,19 @@
-;; Game state information (e.g. close to end of game, player turn direction)
-
 (in-microtheory UnoPlayer)
+
+;; Game state information (e.g. close to end of game, player turn direction)
 
 
 ;; ------------------------------------------------------------
 ;; -------------------- End vs Early Game ---------------------
 ;; ------------------------------------------------------------
 
-;(<== (endGame true)
-;    (and
-;        (evaluate ?quantitiesList
-;            (TheClosedRetrievalSetOf ?num
-;            (opponentHandSize ?opponent ?num)))
-;        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
-;        (lessThan ?minQuantity 3)))
+;;(<== (endGame true)
+;;    (and
+;;        (evaluate ?quantitiesList
+;;            (TheClosedRetrievalSetOf ?num
+;;            (opponentHandSize ?opponent ?num)))
+;;        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
+;;        (lessThan ?minQuantity 3)))
 
 
 
@@ -69,6 +69,4 @@
 ;; entity representing the number of cards the current player must draw
 (isa cardsToDraw Number)
 (comment cardsToDraw "Number of cards the current player needs to draw, unless there is a special play")
-;(numberCardsToDraw cardsToDraw 0)
-
-
+(numberCardsToDraw cardsToDraw 0)

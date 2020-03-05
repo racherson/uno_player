@@ -38,8 +38,8 @@
 (isa DecreaseOpponentHandSize ComplexActionPredicate)
 (arity DecreaseOpponentHandSize 2)
 
-(isa ChangeTopCard ComplexActionPredicate)
-(arity ChangeTopCard 1)
+(isa UpdateTopCard ComplexActionPredicate)
+(arity UpdateTopCard 1)
 
 (isa Discard ComplexActionPredicate)
 (arity Discard 1)
