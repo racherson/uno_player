@@ -11,6 +11,9 @@
 (isa opponentPlayedCard ComplexActionPredicate)
 (arity opponentPlayedCard 2)
 
+(isa opponentPlayedReverseCard ComplexActionPredicate)
+(arity opponentPlayedReverseCard 2)
+
 (isa opponentPlayedWildCard ComplexActionPredicate)
 (arity opponentPlayedWildCard 2)
 

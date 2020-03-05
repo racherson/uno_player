@@ -73,6 +73,22 @@
                 (doAgentPlan
                     (UpdateTopCard ?card))))))
 
+;; opponent played reverse card 
+(preconditionForMethod
+    (and
+        (isa ?card ReverseTheCard))
+    (methodForAction
+        (opponentPlayedReverseCard ?opponent ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (opponentPlayedCard ?opponent ?card))
+                (doAgentPlan
+                    (UpdateDirection))))))
+
+
+
+
 ;; opponent played wild card and requested a color
 (preconditionForMethod
     (and
