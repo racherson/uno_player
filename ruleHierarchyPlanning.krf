@@ -273,9 +273,23 @@
 
 (preconditionForMethod
     (and
-        (getTopCard gameState ?topCard))
+        (true))
     (methodForAction
         (InitializeGame ?topCard ?card1 ?card2 ?card3 ?card4 ?card5 ?card6 ?card7)
         (actionSequence
             (TheList
-              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?topCard))))))) ;;;;;;;;; TODO: set 7 cards to be in hand cards
+              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?topCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card1 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card2 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card3 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card4 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card5 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card6 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card7 unseenCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card1 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card2 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card3 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card4 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card5 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card6 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card7 inHandCard)))))))

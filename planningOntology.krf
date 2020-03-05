@@ -46,6 +46,7 @@
 
 (isa InitializeGame ComplexActionPredicate)
 (arity InitializeGame 8)
+(comment InitializeGame "Input the initial state of the game with the starting top card and 7 cards in hand")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
