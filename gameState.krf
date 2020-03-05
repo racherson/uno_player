@@ -7,14 +7,13 @@
 ;; -------------------- End vs Early Game ---------------------
 ;; ------------------------------------------------------------
 
-(<== (endGame true)
-    (and
-        (evaluate ?quantitiesList
-            (TheClosedRetrievalSetOf ?num
-            (opponentHandSize ?opponent ?num)))
-        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
-        (lessThan ?minQuantity 3)))
-
+(<== (endGame)
+	(and (evaluate ?quantitiesList
+        (TheClosedRetrievalSetOf ?num
+        	(opponentHandSize ?opponent ?num)))
+        (evaluate ?minQuantity
+           	(MinimumFn ?quantitiesList IdentityFn))
+        (lessThan ?minQuantity 4)))
 
 
 ;; ------------------------------------------------------------
