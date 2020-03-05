@@ -52,7 +52,7 @@
 (colorPreference opponent2 GreenPlayingCard unoNeutral)
 (colorPreference opponent2 BluePlayingCard unoNeutral)
 (colorPreference opponent2 YellowPlayingCard unoNeutral)
-(opponentHandSize opponent1 7)
+(opponentHandSize opponent2 7)
 (comment opponent2 "Second of three opponents in Uno")
 
 (isa opponent3 UnoOpponent)
@@ -60,5 +60,5 @@
 (colorPreference opponent3 GreenPlayingCard unoNeutral)
 (colorPreference opponent3 BluePlayingCard unoNeutral)
 (colorPreference opponent3 YellowPlayingCard unoNeutral)
-(opponentHandSize opponent1 7)
+(opponentHandSize opponent3 7)
 (comment opponent3 "Third of three opponents in Uno")
