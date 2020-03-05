@@ -8,8 +8,11 @@
 (isa opponentDrewCard ComplexActionPredicate)
 (arity opponentDrewCard 2)
 
-(isa opponentPlayedCard Predicate)
+(isa opponentPlayedCard ComplexActionPredicate)
 (arity opponentPlayedCard 2)
+
+(isa opponentPlayedWildCard ComplexActionPredicate)
+(arity opponentPlayedWildCard 2)
 
 (isa opponentDrewAndPlayed ComplexActionPredicate)
 (arity opponentDrewAndPlayed 2)
@@ -17,20 +20,32 @@
 (isa selfDrewCard ComplexActionPredicate)
 (arity selfDrewCard 1)
 
-(isa selfPlayedCard Predicate)
+(isa selfPlayedCard ComplexActionPredicate)
 (arity selfPlayedCard 1)
 
 (isa UpdateColorPreferencesDrewCard ComplexActionPredicate)
 (arity UpdateColorPreferencesDrewCard 1)
 
-(isa UpdateColorPreferencesPlayedCard Predicate)
+(isa UpdateColorPreferencesPlayedCard ComplexActionPredicate)
 (arity UpdateColorPreferencesPlayedCard 2)
+
+(isa UpdateColorPreferencesPlayedWildCard ComplexActionPredicate)
+(arity UpdateColorPreferencesPlayedWildCard 2)
 
 (isa IncreaseOpponentHandSize ComplexActionPredicate)
 (arity IncreaseOpponentHandSize 2)
 
 (isa DecreaseOpponentHandSize ComplexActionPredicate)
 (arity DecreaseOpponentHandSize 2)
+
+(isa UpdateTopCard ComplexActionPredicate)
+(arity UpdateTopCard 1)
+
+(isa Discard ComplexActionPredicate)
+(arity Discard 1)
+
+(isa InitializeGame ComplexActionPredicate)
+(arity InitializeGame 8)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

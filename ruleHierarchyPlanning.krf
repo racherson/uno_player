@@ -22,7 +22,7 @@
                     (IncreaseOpponentHandSize ?opponent ?quantity))))))
 
 ;;if 2 or more cards were drawn, they got a draw +2 or +4
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (greaterThan ?quantity 1))
     (methodForAction
@@ -38,15 +38,16 @@
     (and
         (true))
     (methodForAction
-        (opponentDrewAndPlayed ?opponent ?quantity)
+        (opponentDrewAndPlayed ?opponent ?card)
         (actionSequence
             (TheList
                 (doAgentPlan
-                    ()))))) ;;; what happens??
+                    (UpdateColorPreferencesDrewCard ?opponent))
+                (doAgentPlan
+                    (UpdateTopCard ?card))))))
 
-;;;;;;;;;;;;;;;;;;; self drew card
-;; update in hand state
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+;;;;;;;;;;;;;;;;;;; Self drew card
+(preconditionForMethod
     (and
         (true))
     (methodForAction
@@ -58,7 +59,7 @@
 
 ;;;;;;;;;;;;;;;;;;; Played a Card
 ;; opponent played card
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (true))
     (methodForAction
@@ -68,15 +69,17 @@
                 (doAgentPlan
                     (DecreaseOpponentHandSize ?opponent 1))
                 (doAgentPlan
-                    (UpdateColorPreferencesPlayedCard ?opponent ?card))))))
+                    (UpdateColorPreferencesPlayedCard ?opponent ?card))
+                (doAgentPlan
+                    (UpdateTopCard ?card))))))
 
 ;; opponent played wild card and requested a color
 (preconditionForMethod
     (and
-        (isa ?color ?cardColor)
+        (isa ?wildColorCard WildTheCard)
+        (isa ?wildColorCard ?cardColor)
         (isa ?cardColor PlayingCardColor)
-        (isa ?wildColorCard WildColor)
-        (isa ?wildColorCard ?cardColor))
+        (equals ?color ?cardColor))
     (methodForAction
         (opponentPlayedWildCard ?opponent ?color)
         (actionSequence
@@ -90,11 +93,21 @@
 
 
 ;; self played card
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (true))
     (methodForAction
         (selfPlayedCard ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan (Discard ?card))
+                (doAgentPlan (UpdateTopCard ?card))))))
+
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (Discard ?card)
         (actionSequence
             (TheList
                 (doForget (ist-Information UnoPlayer (cardState ?card inHandCard)))
@@ -106,7 +119,7 @@
 
 (preconditionForMethod
     (and
-       	(getTopCardFn ?topCard)
+       	(getTopCard gameState ?topCard)
         (isa ?topCard RedPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -127,7 +140,7 @@
 
 (preconditionForMethod
     (and
-    	  (getTopCardFn ?topCard)
+    	(getTopCard gameState ?topCard)
         (isa ?topCard BluePlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -137,7 +150,7 @@
         (UpdateColorPreferencesDrewCard ?opponent)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
               (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
@@ -149,7 +162,7 @@
 
 (preconditionForMethod
     (and
-   		  (getTopCardFn ?topCard)
+   		(getTopCard gameState ?topCard)
         (isa ?topCard GreenPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -170,7 +183,7 @@
 
 (preconditionForMethod
     (and
-    		(getTopCardFn ?topCard)
+    	(getTopCard gameState ?topCard)
         (isa ?topCard YellowPlayingCard)
         (colorPreference ?opponent RedPlayingCard ?redPref)
         (colorPreference ?opponent BluePlayingCard ?bluePref)
@@ -189,7 +202,7 @@
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoAvoid)))))))
 
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (isa ?card ?cardColor)
         (isa ?cardColor PlayingCardColor)
@@ -201,7 +214,7 @@
             	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
               (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
 
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (isa ?wildCardColor ?cardColor)
         (isa ?cardColor PlayingCardColor)
@@ -218,7 +231,7 @@
 ;; -------------------- Update Opponent Hand Size -------------
 ;; ------------------------------------------------------------
 
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (opponentHandSize ?opponent ?currentSize)
        	(evaluate ?newSize (PlusFn ?quantity ?currentSize)))
@@ -229,7 +242,7 @@
             	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
               (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
 
-(preconditionForMethod ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTED
+(preconditionForMethod
     (and
         (opponentHandSize ?opponent ?currentSize)
         (evaluate ?newSize (DifferenceFn ?currentSize ?quantity)))
@@ -241,15 +254,28 @@
               (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
 
 ;; ------------------------------------------------------------
-;; -------------------- Update Top Card -----------------------
+;; -------------------- Change Top Card -----------------------
 ;; ------------------------------------------------------------
 
 (preconditionForMethod
     (and
-        (getTopCardFn ?topCard))
+        (getTopCard gameState ?topCard))
     (methodForAction
         (UpdateTopCard ?card)
         (actionSequence
             (TheList
-            	(doForget (ist-Information UnoPlayer (topCard ?topCard))) ;;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO
-              (doRecord (ist-Information UnoPlayer (topCard ?card))))))) ;;;;;;;;;;;;;;;;;;;;;;;;;;; TODO
+              (doForget (ist-Information UnoPlayer (getTopCard gameState ?topCard)))
+              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?card)))))))
+
+;; ------------------------------------------------------------
+;; -------------------- Initialize Game -----------------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (getTopCard gameState ?topCard))
+    (methodForAction
+        (InitializeGame ?topCard ?card1 ?card2 ?card3 ?card4 ?card5 ?card6 ?card7)
+        (actionSequence
+            (TheList
+              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?topCard))))))) ;;;;;;;;; TODO: set 7 cards to be in hand cards

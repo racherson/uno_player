@@ -1,23 +1,57 @@
-;; Game state information 
-
 (in-microtheory UnoPlayer)
+
+;; Game state information (e.g. close to end of game, player turn direction)
 
 
 ;; ------------------------------------------------------------
 ;; -------------------- End vs Early Game ---------------------
 ;; ------------------------------------------------------------
 
-(<== (endGame true)
-    (and
-        (evaluate ?quantitiesList
-            (TheClosedRetrievalSetOf ?num
-            (opponentHandSize ?opponent ?num)))
-        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
-    	(lessThan ?minQuantity 3)))
+;;(<== (endGame true)
+;;    (and
+;;        (evaluate ?quantitiesList
+;;            (TheClosedRetrievalSetOf ?num
+;;            (opponentHandSize ?opponent ?num)))
+;;        (evaluate ?minQuantity (MinimumFn ?quantitiesList IdentityFn))
+;;        (lessThan ?minQuantity 3)))
 
-;; TODO direction
 
-;; TODO track top card
+
+;; ------------------------------------------------------------
+;; ---------- Game State: Turn Direction + Top Card -----------
+;; ------------------------------------------------------------
+
+(isa UnoGameState ClarifyingCollectionType)
+(genls UnoGameState ExistingObjectType)
+(comment UnoGameState "Collection of states for Uno game")
+
+(isa UnoDirection KBDependentCollection)
+(genls UnoDirection Direction)
+(comment UnoDirection "Collection of directions for player turns in Uno")
+
+(isa unoClockwise UnoDirection)
+(comment unoClockwise "Player turns flow clockwise, meaning self > opponent 1 > opponent 2 > opponent3")
+
+(isa unoCounterClockwise UnoDirection)
+(comment unoCounterClockwise "Player turns flow counter clockwise, meaning opponent 3 > opponent 2 > opponent1 > self")
+
+(isa gameDirection BinaryPredicate)
+(arity gameDirection 2)
+(arg1Isa gameDirection UnoGameState)
+(arg2Isa gameDirection UnoDirection)
+(comment gameDirection "A relation connecting an uno game to the direction of players turns")
+
+
+(isa getTopCard BinaryPredicate)
+(arity getTopCard 2)
+(arg1Isa getTopCard UnoGameState)
+(arg2Isa getTopCard PlayingCard)
+(comment getTopCard "A relation connecting an uno game to the top card in the discard pile")
+
+
+(isa gameState UnoGameState)
+(comment gameState "The state of the current uno game, including top card and turn direction. Initialized to clockwise.")
+(gameDirection gameState unoClockwise)
 
 
 ;; ------------------------------------------------------------
