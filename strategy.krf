@@ -77,6 +77,7 @@
 
 ;; ************ mostCommonColorInHand ***********
 ;; Method to get the color that you have the most of for purpose of wildcards/switching colors
+
 ;; *** check if you have the most red cards
 (<== (mostCommonColorInHand RedPlayingCard)
     (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
