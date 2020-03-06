@@ -1,0 +1,9 @@
+(in-microtheory MyNextMoveMt)
+
+
+(isa nextMove UnaryPredicate)
+(arity nextMove 1)
+(arg1Isa nextMove PlayingCard)
+(comment nextMove "Stores card to play for your next move in Uno")
+
+(nextMove red7) ; this is a dummy initial value since we will forget the old value before updating

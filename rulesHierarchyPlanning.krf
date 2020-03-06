@@ -1,0 +1,24 @@
+(in-microtheory UnoPlayer)
+(genlMt Session-ReasonerPlanMt UnoPlayer)
+
+(genlMt Session-ReasonerPlanMt MyNextMove)
+
+
+
+;; ------------------------------------------------------------
+;; ----------------------- Late Game Hierarchy ----------------
+;; ------------------------------------------------------------
+
+;; WILD DRAW 4  
+(preconditionForMethod
+    (and
+        (nextMove ?currCard)
+        (getTopCard ?topCard)
+        (playableCards ?cards ?topCard)
+        (isa ?cards WildDraw4TheCard))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
