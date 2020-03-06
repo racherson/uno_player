@@ -9,11 +9,11 @@
 ;; ----------------------- Late Game Hierarchy ----------------
 ;; ------------------------------------------------------------
 
-;; WILD DRAW 4  
+;; WILD DRAW 4
 (preconditionForMethod
     (and
         (nextMove ?currCard)
-        (getTopCard ?topCard)
+        (getTopCard gameState ?topCard)
         (playableCards ?cards ?topCard)
         (isa ?cards WildDraw4TheCard))
     (methodForAction
