@@ -4,21 +4,42 @@
 (genlMt Session-ReasonerPlanMt MyNextMove)
 
 
-
 ;; ------------------------------------------------------------
 ;; ----------------------- Late Game Hierarchy ----------------
 ;; ------------------------------------------------------------
+;; planning to be done if (endGame) returns true
 
-;; WILD DRAW 4
+;; Draw 4s
+;; Wilds
+;; Draw 2s
+;; Skip (unless second player across is only late game) and you have a reverse
+;; Reverse
+;; Switch color away from winning player's preferences
+;; Play highest numeric card
+
+;; Draw 4
 (preconditionForMethod
     (and
+    	(endGame)
         (nextMove ?currCard)
         (getTopCard gameState ?topCard)
-        (playableCards ?cards ?topCard)
-        (isa ?cards WildDraw4TheCard))
+        (playableCards ?card ?topCard)
+        (isa ?card WildDraw4TheCard))
     (methodForAction
         (cardToPlay)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
-                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?card)))))))
+
+;; ------------------------------------------------------------
+;; ----------------------- Early Game Hierarchy ----------------
+;; ------------------------------------------------------------
+;; planning to be done if (earlyGame) returns true
+
+;; Skips and reverses
+;; Color you have more of
+;; Highest numeric card
+;; Draw 2s
+;; Wilds
+;; Draw 4s

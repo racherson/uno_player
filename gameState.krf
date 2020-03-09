@@ -15,6 +15,14 @@
            	(MinimumFn ?quantitiesList IdentityFn))
         (lessThan ?minQuantity 4)))
 
+(<== (earlyGame)
+	(and (evaluate ?quantitiesList
+        (TheClosedRetrievalSetOf ?num
+        	(opponentHandSize ?opponent ?num)))
+        (evaluate ?minQuantity
+           	(MinimumFn ?quantitiesList IdentityFn))
+        (greaterThan ?minQuantity 3)))
+
 
 ;; ------------------------------------------------------------
 ;; ---------- Game State: Turn Direction + Top Card -----------
