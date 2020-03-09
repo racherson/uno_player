@@ -99,6 +99,7 @@
 (genls WildDraw4TheCard PlayingCard)
 (comment WildTheCard "A subcollection of PlayingCard that contains all of the cards which have the special value of 'Wild draw 4'")
 
+
 ;; collection for the state of the card
 
 (isa CardState KBDependentCollection)
@@ -463,6 +464,350 @@
 (isa wildDraw4 WildDraw4TheCard)
 (comment wildDraw4 "The UNO playing card with the special ability to change the suit to the user's choice and make the next player draw four cards in place of their turn")
 (cardState wildDraw4 unseenCard)
+
+(isa wildRed WildTheCard)
+(isa wildRed RedPlayingCard)
+(commend wildRed "The UNO playing card that is the generic red color after a wild card is played")
+
+(isa wildGreen WildTheCard)
+(isa wildGreen GreenPlayingCard)
+(commend wildRed "The UNO playing card that is the generic green color after a wild card is played")
+
+(isa wildBlue WildTheCard)
+(isa wildBlue BluePlayingCard)
+(commend wildBlue "The UNO playing card that is the generic blue color after a wild card is played")
+
+(isa wildYellow WildTheCard)
+(isa wildYellow YellowPlayingCard)
+(commend wildYellow "The UNO playing card that is the generic yellow color after a wild card is played")
+(in-microtheory UnoPlayer)
+(genlMt Session-ReasonerPlanMt UnoPlayer)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;; Planning ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;; opponent drew card
+
+;; usage: (opponentDrewCard ?opponent ?quantity)
+
+;;if 1 card was drawn, it means they couldn't play with their hand
+(preconditionForMethod
+    (and
+        (equals ?quantity 1))
+    (methodForAction
+        (opponentDrewCard ?opponent ?quantity)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (UpdateColorPreferencesDrewCard ?opponent))
+                (doAgentPlan
+                    (IncreaseOpponentHandSize ?opponent ?quantity))))))
+
+;;if 2 or more cards were drawn, they got a draw +2 or +4
+(preconditionForMethod
+    (and
+        (greaterThan ?quantity 1))
+    (methodForAction
+        (opponentDrewCard ?opponent ?quantity)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (IncreaseOpponentHandSize ?opponent ?quantity))))))
+
+
+;; opponent drew and played
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (opponentDrewAndPlayed ?opponent ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (UpdateColorPreferencesDrewCard ?opponent))
+                (doAgentPlan
+                    (UpdateTopCard ?card))))))
+
+;;;;;;;;;;;;;;;;;;; Self drew card
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (selfDrewCard ?card)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information UnoPlayer (cardState ?card unseenCard)))
+                (doRecord (ist-Information UnoPlayer (cardState ?card inHandCard)))))))
+
+;;;;;;;;;;;;;;;;;;; Played a Card
+;; opponent played card
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (opponentPlayedCard ?opponent ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (DecreaseOpponentHandSize ?opponent 1))
+                (doAgentPlan
+                    (UpdateColorPreferencesPlayedCard ?opponent ?card))
+                (doAgentPlan
+                    (UpdateTopCard ?card))))))
+
+;; opponent played reverse card 
+(preconditionForMethod
+    (and
+        (isa ?card ReverseTheCard))
+    (methodForAction
+        (opponentPlayedReverseCard ?opponent ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (opponentPlayedCard ?opponent ?card))
+                (doAgentPlan
+                    (UpdateDirection))))))
+
+
+
+
+;; opponent played wild card and requested a color
+(preconditionForMethod
+    (and
+        (isa ?wildColorCard WildTheCard)
+        (isa ?wildColorCard ?cardColor)
+        (isa ?cardColor PlayingCardColor)
+        (equals ?color ?cardColor))
+    (methodForAction
+        (opponentPlayedWildCard ?opponent ?color)
+        (actionSequence
+            (TheList
+                (doAgentPlan
+                    (DecreaseOpponentHandSize ?opponent 1))
+                (doAgentPlan
+                    (UpdateColorPreferencesPlayedWildCard ?opponent ?wildColorCard))
+                (doAgentPlan
+                    (UpdateTopCard ?wildColorCard))))))
+
+
+;; self played card
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (selfPlayedCard ?card)
+        (actionSequence
+            (TheList
+                (doAgentPlan (Discard ?card))
+                (doAgentPlan (UpdateTopCard ?card))))))
+
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (Discard ?card)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information UnoPlayer (cardState ?card inHandCard)))
+                (doRecord (ist-Information UnoPlayer (cardState ?card discardedCard)))))))
+
+;; ------------------------------------------------------------
+;; -------------------- Update Color Preferences --------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+       	(getTopCard gameState ?topCard)
+        (isa ?topCard RedPlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
+    (methodForAction
+        (UpdateColorPreferencesDrewCard ?opponent)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoAvoid)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
+
+(preconditionForMethod
+    (and
+    	(getTopCard gameState ?topCard)
+        (isa ?topCard BluePlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
+    (methodForAction
+        (UpdateColorPreferencesDrewCard ?opponent)
+        (actionSequence
+            (TheList
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoAvoid)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
+
+
+(preconditionForMethod
+    (and
+   		(getTopCard gameState ?topCard)
+        (isa ?topCard GreenPlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
+    (methodForAction
+        (UpdateColorPreferencesDrewCard ?opponent)
+        (actionSequence
+            (TheList
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoAvoid)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoNeutral)))))))
+
+(preconditionForMethod
+    (and
+    	(getTopCard gameState ?topCard)
+        (isa ?topCard YellowPlayingCard)
+        (colorPreference ?opponent RedPlayingCard ?redPref)
+        (colorPreference ?opponent BluePlayingCard ?bluePref)
+        (colorPreference ?opponent GreenPlayingCard ?greenPref)
+        (colorPreference ?opponent YellowPlayingCard ?yellowPref))
+    (methodForAction
+        (UpdateColorPreferencesDrewCard ?opponent)
+        (actionSequence
+            (TheList
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard ?redPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard ?bluePref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard ?greenPref)))
+              (doForget (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard ?yellowPref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent RedPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent BluePlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent GreenPlayingCard unoNeutral)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent YellowPlayingCard unoAvoid)))))))
+
+(preconditionForMethod
+    (and
+        (isa ?card ?cardColor)
+        (isa ?cardColor PlayingCardColor)
+        (colorPreference ?opponent ?cardColor ?pref))
+    (methodForAction
+        (UpdateColorPreferencesPlayedCard ?opponent ?card)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoNeutral)))))))
+
+(preconditionForMethod
+    (and
+        (isa ?wildCardColor ?cardColor)
+        (isa ?cardColor PlayingCardColor)
+        (colorPreference ?opponent ?cardColor ?pref))
+    (methodForAction
+        (UpdateColorPreferencesPlayedWildCard ?opponent ?wildCardColor)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor ?pref)))
+              (doRecord (ist-Information UnoPlayer (colorPreference ?opponent ?cardColor unoPreferred)))))))
+
+
+;; ------------------------------------------------------------
+;; -------------------- Update Opponent Hand Size -------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (opponentHandSize ?opponent ?currentSize)
+       	(evaluate ?newSize (PlusFn ?quantity ?currentSize)))
+    (methodForAction
+        (IncreaseOpponentHandSize ?opponent ?quantity)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
+              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
+
+(preconditionForMethod
+    (and
+        (opponentHandSize ?opponent ?currentSize)
+        (evaluate ?newSize (DifferenceFn ?currentSize ?quantity)))
+    (methodForAction
+        (DecreaseOpponentHandSize ?opponent ?quantity)
+        (actionSequence
+            (TheList
+            	(doForget (ist-Information UnoPlayer (opponentHandSize ?opponent ?currentSize)))
+              (doRecord (ist-Information UnoPlayer (opponentHandSize ?opponent ?newSize)))))))
+
+;; ------------------------------------------------------------
+;; -------------------- Change Top Card -----------------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (getTopCard gameState ?topCard))
+    (methodForAction
+        (UpdateTopCard ?card)
+        (actionSequence
+            (TheList
+              (doForget (ist-Information UnoPlayer (getTopCard gameState ?topCard)))
+              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?card)))))))
+
+;; ------------------------------------------------------------
+;; -------------------- Change Direction ----------------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (gameDirection gameState ?direction)
+        (opposite ?direction ?oppositeDirection))
+    (methodForAction
+        (UpdateDirection)
+        (actionSequence
+            (TheList
+              (doForget (ist-Information UnoPlayer (gameDirection gameState ?direction)))
+              (doRecord (ist-Information UnoPlayer (gameDirection gameState ?oppositeDirection)))))))
+
+;; ------------------------------------------------------------
+;; -------------------- Initialize Game -----------------------
+;; ------------------------------------------------------------
+
+(preconditionForMethod
+    (and
+        (true))
+    (methodForAction
+        (InitializeGame ?topCard ?card1 ?card2 ?card3 ?card4 ?card5 ?card6 ?card7)
+        (actionSequence
+            (TheList
+              (doRecord (ist-Information UnoPlayer (getTopCard gameState ?topCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?topCard unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card1 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card2 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card3 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card4 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card5 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card6 unseenCard)))
+              (doForget (ist-Information UnoPlayer (cardState ?card7 unseenCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?topCard discardedCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card1 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card2 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card3 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card4 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card5 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card6 inHandCard)))
+              (doRecord (ist-Information UnoPlayer (cardState ?card7 inHandCard)))))))
 (in-microtheory UnoPlayer)
 
 ;; ------------------------------------------------------------
@@ -485,7 +830,7 @@
 ;; ************ matchingCards ***********
 ;; Compare two cards to determine if they match symbols or colors
 
-;; check for matching colors
+;; check for matching numbers
 (<== (matchingCards ?card1 ?card2)
     (isa ?card1 ?number)
     (isa ?number NumberCardType)
@@ -496,6 +841,10 @@
     (isa ?card1 ?symbol)
     (isa ?symbol SpecialCardType)
     (isa ?card2 ?symbol))
+
+;; *** check for same color
+(<== (matchingCards ?card1 ?card2)
+	(sameColor ?card1 ?card2))
 
 ;; ************ cardInHandWithColor ***********
 ;; Method to get cards in hand that are the same color as the top color
@@ -508,8 +857,77 @@
 ;; used to determine highest value card
 (<== (playableCardValue ?value ?topCard)
     (playableCards ?card ?topCard)
-    (isa ?card NumberCardType)
     (cardValue ?card ?value))
+
+;; ************ countOfMostCommonColorInHand ***********
+;; Method to get the count of the color that you have the most of for purpose of wildcards/switching colors
+(<== (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+   	(and (evaluate ?redCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?redCards (cardInHandWithColor RedPlayingCard ?redCards))))
+        (evaluate ?n-redCardList
+        	(LengthOfListFn ?redCardList)))
+	(and (evaluate ?yellowCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?yellowCards (cardInHandWithColor YellowPlayingCard ?yellowCards))))
+        (evaluate ?n-yellowCardList
+        	(LengthOfListFn ?yellowCardList)))
+    (and (evaluate ?greenCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?greenCards (cardInHandWithColor GreenPlayingCard ?greenCards))))
+        (evaluate ?n-greenCardList
+        	(LengthOfListFn ?greenCardList)))
+    (and (evaluate ?blueCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?blueCards (cardInHandWithColor BluePlayingCard ?blueCards))))
+        (evaluate ?n-blueCardList
+            (LengthOfListFn ?blueCardList)))
+    (evaluate ?countOfCardsWithMostFrequentColor 
+    	(MaximumFn (TheList ?n-redCardList ?n-yellowCardList ?n-blueCardList ?n-greenCardList) IdentityFn)))
+
+;; ************ mostCommonColorInHand ***********
+;; Method to get the color that you have the most of for purpose of wildcards/switching colors
+
+;; *** check if you have the most red cards
+(<== (mostCommonColorInHand RedPlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?redCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?redCards (cardInHandWithColor RedPlayingCard ?redCards))))
+        (evaluate ?n-redCardList
+            (LengthOfListFn ?redCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-redCardList))
+
+;; *** check if you have the most yellow cards
+(<== (mostCommonColorInHand YellowPlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?yellowCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?yellowCards (cardInHandWithColor YellowPlayingCard ?yellowCards))))
+        (evaluate ?n-yellowCardList
+            (LengthOfListFn ?yellowCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-ryellowCardList))
+
+;; *** check if you have the most green cards
+(<== (mostCommonColorInHand GreenPlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?greenCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?greenCards (cardInHandWithColor GreenPlayingCard ?greenCards))))
+        (evaluate ?n-greenCardList
+            (LengthOfListFn ?greenCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-greenCardList))
+
+;; *** check if you have the most blue cards
+(<== (mostCommonColorInHand BluePlayingCard)
+    (countOfMostCommonColorInHand ?countOfCardsWithMostFrequentColor)
+    (and (evaluate ?blueCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?blueCards (cardInHandWithColor BluePlayingCard ?blueCards))))
+        (evaluate ?n-blueCardList
+            (LengthOfListFn ?blueCardList)))
+    (equals ?countOfCardsWithMostFrequentColor ?n-blueCardList))
+
 
 ;; ------------------------------------------------------------
 ;; ----------------------- Basic rules ------------------------
@@ -518,12 +936,12 @@
 ;; ************ playableCards ***********
 ;; Function to return all cards in hand that could be played
 
-;; *** check for playable cards with matching color or number
+;; *** check for playable cards with matching color or number or symbol
 (<== (playableCards ?card ?topCard)
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)
     (cardState ?card inHandCard)
-    (matchingCards ?card ?topCard))
+    (matchingCards ?topCard ?card))
 
 ;; *** check for playable wild cards (can always be played)
 ;; TODO: store color once its been decided
@@ -549,10 +967,11 @@
     (and (evaluate ?cardsMatchingTopColorInHand
         (SetToListFn
             (TheClosedRetrievalSetOf ?cards (cardInHandWithColor ?topColor ?cards))))
-        (evaluate ?n-cardsMatchingTopColorInHand (LengthOfListFn ?cardsMatchingTopColorInHand))
-        (equals ?n-cardsMatchingTopColorInHand 0)
-        (cardState ?playableWildCard inHandCard)
-        (isa ?playableWildCard WildDraw4TheCard)))
+        (evaluate ?n-cardsMatchingTopColorInHand
+        	(LengthOfListFn ?cardsMatchingTopColorInHand))
+        (equals ?n-cardsMatchingTopColorInHand 0))
+    (cardState ?playableWildCard inHandCard)
+    (isa ?playableWildCard WildDraw4TheCard))
 
 ;; ------------------------------------------------------------
 ;; ----------------------- Strategic rules --------------------
@@ -565,12 +984,18 @@
 (<== (highestValuePlayableCard ?highestValueCard ?topCard)
     (and (evaluate ?playableCardValues
         (SetToListFn
-            (TheClosedRetrievalSetOf ?cardValues
+            (TheClosedRetrievalSetOf ?value
                 (playableCardValue ?value ?topCard))))
-    (evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
+    	(evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
     (playableCards ?highestValueCard ?topCard)
     (cardValue ?highestValueCard ?greatestValue))
-;; opponent information
+
+
+;; ************ pickWildCardColorEarlyGame ***********
+;; Method to pick which color to switch to if it is early in the game
+;; only considers own preferences
+(<== (pickWildCardColorEarlyGame ?color)
+	(mostCommonColorInHand ?color));; opponent information
 
 (in-microtheory UnoPlayer)
 
@@ -624,7 +1049,7 @@
 (colorPreference opponent2 GreenPlayingCard unoNeutral)
 (colorPreference opponent2 BluePlayingCard unoNeutral)
 (colorPreference opponent2 YellowPlayingCard unoNeutral)
-(opponentHandSize opponent1 7)
+(opponentHandSize opponent2 7)
 (comment opponent2 "Second of three opponents in Uno")
 
 (isa opponent3 UnoOpponent)
@@ -632,5 +1057,189 @@
 (colorPreference opponent3 GreenPlayingCard unoNeutral)
 (colorPreference opponent3 BluePlayingCard unoNeutral)
 (colorPreference opponent3 YellowPlayingCard unoNeutral)
-(opponentHandSize opponent1 7)
+(opponentHandSize opponent3 7)
 (comment opponent3 "Third of three opponents in Uno")
+
+
+(in-microtheory UnoPlayer)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(isa opponentDrewCard ComplexActionPredicate)
+(arity opponentDrewCard 2)
+
+(isa opponentPlayedCard ComplexActionPredicate)
+(arity opponentPlayedCard 2)
+
+(isa opponentPlayedReverseCard ComplexActionPredicate)
+(arity opponentPlayedReverseCard 2)
+
+(isa opponentPlayedWildCard ComplexActionPredicate)
+(arity opponentPlayedWildCard 2)
+
+(isa opponentDrewAndPlayed ComplexActionPredicate)
+(arity opponentDrewAndPlayed 2)
+
+(isa selfDrewCard ComplexActionPredicate)
+(arity selfDrewCard 1)
+
+(isa selfPlayedCard ComplexActionPredicate)
+(arity selfPlayedCard 1)
+
+(isa UpdateColorPreferencesDrewCard ComplexActionPredicate)
+(arity UpdateColorPreferencesDrewCard 1)
+
+(isa UpdateColorPreferencesPlayedCard ComplexActionPredicate)
+(arity UpdateColorPreferencesPlayedCard 2)
+
+(isa UpdateColorPreferencesPlayedWildCard ComplexActionPredicate)
+(arity UpdateColorPreferencesPlayedWildCard 2)
+
+(isa IncreaseOpponentHandSize ComplexActionPredicate)
+(arity IncreaseOpponentHandSize 2)
+
+(isa DecreaseOpponentHandSize ComplexActionPredicate)
+(arity DecreaseOpponentHandSize 2)
+
+(isa UpdateTopCard ComplexActionPredicate)
+(arity UpdateTopCard 1)
+
+(isa UpdateDirection ComplexActionPredicate)
+(arity UpdateDirection 0)
+
+(isa Discard ComplexActionPredicate)
+(arity Discard 1)
+
+(isa InitializeGame ComplexActionPredicate)
+(arity InitializeGame 8)
+(comment InitializeGame "Input the initial state of the game with the starting top card and 7 cards in hand")
+
+(isa cardToPlay ComplexActionPredicate)
+(arity cardToPlay 0)(in-microtheory UnoPlayer)
+
+;; Game state information (e.g. close to end of game, player turn direction)
+
+
+;; ------------------------------------------------------------
+;; -------------------- End vs Early Game ---------------------
+;; ------------------------------------------------------------
+
+(<== (endGame)
+	(and (evaluate ?quantitiesList
+        (TheClosedRetrievalSetOf ?num
+        	(opponentHandSize ?opponent ?num)))
+        (evaluate ?minQuantity
+           	(MinimumFn ?quantitiesList IdentityFn))
+        (lessThan ?minQuantity 4)))
+
+(<== (earlyGame)
+	(and (evaluate ?quantitiesList
+        (TheClosedRetrievalSetOf ?num
+        	(opponentHandSize ?opponent ?num)))
+        (evaluate ?minQuantity
+           	(MinimumFn ?quantitiesList IdentityFn))
+        (greaterThan ?minQuantity 3)))
+
+
+;; ------------------------------------------------------------
+;; ---------- Game State: Turn Direction + Top Card -----------
+;; ------------------------------------------------------------
+
+(isa UnoGameState ClarifyingCollectionType)
+(genls UnoGameState ExistingObjectType)
+(comment UnoGameState "Collection of states for Uno game")
+
+(isa UnoDirection KBDependentCollection)
+(genls UnoDirection Direction)
+(comment UnoDirection "Collection of directions for player turns in Uno")
+
+(isa unoClockwise UnoDirection)
+(comment unoClockwise "Player turns flow clockwise, meaning self > opponent 1 > opponent 2 > opponent3")
+
+(isa unoCounterClockwise UnoDirection)
+(comment unoCounterClockwise "Player turns flow counter clockwise, meaning opponent 3 > opponent 2 > opponent1 > self")
+
+; relate clockwise and counterclockwise as opposites to switch between them more easily
+(opposite unoClockwise unoCounterClockwise)
+(opposite unoCounterClockwise unoClockwise)
+
+(isa gameDirection BinaryPredicate)
+(arity gameDirection 2)
+(arg1Isa gameDirection UnoGameState)
+(arg2Isa gameDirection UnoDirection)
+(comment gameDirection "A relation connecting an uno game to the direction of players turns")
+
+
+(isa getTopCard BinaryPredicate)
+(arity getTopCard 2)
+(arg1Isa getTopCard UnoGameState)
+(arg2Isa getTopCard PlayingCard)
+(comment getTopCard "A relation connecting an uno game to the top card in the discard pile")
+
+
+(isa gameState UnoGameState)
+(comment gameState "The state of the current uno game, including top card and turn direction. Initialized to clockwise.")
+(gameDirection gameState unoClockwise)
+
+
+;; ------------------------------------------------------------
+;; -------------------- Pending Card Draw ---------------------
+;; ------------------------------------------------------------
+
+;; relation connecting number value to number of cards to draw
+(isa numberCardsToDraw BinaryPredicate)
+(genlPreds numberCardsToDraw number)
+(arity numberCardsToDraw 2)
+(arg1Isa numberCardsToDraw Number)
+(arg2Isa numberCardsToDraw ScalarInterval)
+(comment numberCardsToDraw "A relation stating how many cards need to be drawn at a given point in the game")
+
+;; entity representing the number of cards the current player must draw
+(isa cardsToDraw Number)
+(comment cardsToDraw "Number of cards the current player needs to draw, unless there is a special play")
+(numberCardsToDraw cardsToDraw 0)
+(in-microtheory UnoPlayer)
+(genlMt Session-ReasonerPlanMt UnoPlayer)
+
+(genlMt Session-ReasonerPlanMt MyNextMove)
+
+
+;; ------------------------------------------------------------
+;; ----------------------- Late Game Hierarchy ----------------
+;; ------------------------------------------------------------
+;; planning to be done if (endGame) returns true
+
+;; Draw 4s
+;; Wilds
+;; Draw 2s
+;; Skip (unless second player across is only late game) and you have a reverse
+;; Reverse
+;; Switch color away from winning player's preferences
+;; Play highest numeric card
+
+;; Draw 4
+(preconditionForMethod
+    (and
+    	(endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?card ?topCard)
+        (isa ?card WildDraw4TheCard))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?card)))))))
+
+;; ------------------------------------------------------------
+;; ----------------------- Early Game Hierarchy ----------------
+;; ------------------------------------------------------------
+;; planning to be done if (earlyGame) returns true
+
+;; Skips and reverses
+;; Color you have more of
+;; Highest numeric card
+;; Draw 2s
+;; Wilds
+;; Draw 4s

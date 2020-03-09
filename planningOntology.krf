@@ -2,7 +2,6 @@
 
 (in-microtheory UnoPlayer)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (isa opponentDrewCard ComplexActionPredicate)
@@ -56,7 +55,3 @@
 
 (isa cardToPlay ComplexActionPredicate)
 (arity cardToPlay 0)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; End of Code

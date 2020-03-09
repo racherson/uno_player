@@ -1,7 +1,6 @@
 (in-microtheory MyNextMoveMt)
 (genlMt UnoPlayer MyNextMoveMt)
 
-
 (isa nextMove UnaryPredicate)
 (arity nextMove 1)
 (arg1Isa nextMove PlayingCard)

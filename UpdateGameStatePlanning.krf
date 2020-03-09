@@ -298,9 +298,6 @@
               (doForget (ist-Information UnoPlayer (gameDirection gameState ?direction)))
               (doRecord (ist-Information UnoPlayer (gameDirection gameState ?oppositeDirection)))))))
 
-
-
-
 ;; ------------------------------------------------------------
 ;; -------------------- Initialize Game -----------------------
 ;; ------------------------------------------------------------
