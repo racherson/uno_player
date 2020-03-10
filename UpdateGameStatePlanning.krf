@@ -73,7 +73,7 @@
                 (doAgentPlan
                     (UpdateTopCard ?card))))))
 
-;; opponent played reverse card 
+;; opponent played reverse card
 (preconditionForMethod
     (and
         (isa ?card ReverseTheCard))

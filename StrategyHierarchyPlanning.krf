@@ -38,13 +38,18 @@
                 (cardState ?oldPlayableCard playableCard)))
         (evaluate ?playableCardList
             (TheClosedRetrievalSetOf ?playableCards
-                (playableCards ?playableCards ?topCard))))
+                (playableCards ?playableCards ?topCard)))
+        (evaluate ?nextMoveList
+            (TheClosedRetrievalSetOf ?nextMove
+                (nextMove ?nextMove))))
     (methodForAction
         (cardToPlay)
         (actionSequence
           (TheList
             (doForEach ?oldPlayableCard ?oldPlayableCardList
                 (doForget (ist-Information UnoPlayer (cardState ?oldPlayableCard playableCard))))
+            (doForEach ?nextMove ?nextMoveList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?nextMove))))
             (doForEach ?playableCard ?playableCardList
                 (doRecord (ist-Information UnoPlayer (cardState ?playableCard playableCard))))
             (doAgentPlan
@@ -59,7 +64,6 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Wild
@@ -76,7 +80,6 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
 
 ;; Draw 2
@@ -90,7 +93,6 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Reverse if opponent2 is close to winning
@@ -107,10 +109,9 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
-;; Skip
+;; Skip and reverse
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -124,7 +125,21 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
+;; Skip only
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
+        (uninferredSentence (isa ?playableCards WildTheCard))
+        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (isa ?playableCards SkipTheCard))
+    (methodForAction
+        (cardToPlayHelper ?currCard ?topCard)
+        (actionSequence
+            (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Reverse
@@ -140,7 +155,6 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Switch color away from opponent preferences
@@ -158,7 +172,6 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Highest numeric card
@@ -175,7 +188,6 @@
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
 
 ;; ------------------------------------------------------------
