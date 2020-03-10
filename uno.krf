@@ -902,8 +902,8 @@
 ;; ************ playableCardValue ***********
 ;; Method to get the values of all playable cards
 ;; used to determine highest value card
-(<== (playableCardValue ?value ?topCard)
-    (playableCards ?card ?topCard)
+(<== (playableCardValue ?value)
+    (cardState ?card playableCard)
     (cardValue ?card ?value))
 
 ;; ************ countOfMostCommonColorInHand ***********
@@ -992,6 +992,45 @@
         (LengthOfListFn ?playableCardList))
     (equals ?n-playableCardList 0))
 
+;; ************ colorIsInHand ***********
+;; Method to get colors that you have in your hand
+
+;; *** check if you have red cards
+(<== (colorIsInHand RedPlayingCard)
+    (and (evaluate ?cardsMatchingColorInHand
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?cards (cardInHandWithColor RedPlayingCard ?cards))))
+        (evaluate ?n-cardsMatchingColorInHand
+            (LengthOfListFn ?cardsMatchingColorInHand))
+        (greaterThan ?n-cardsMatchingColorInHand 0)))
+
+;; *** check if you have yellow cards
+(<== (colorIsInHands YellowPlayingCard)
+    (and (evaluate ?cardsMatchingColorInHand
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?cards (cardInHandWithColor YellowPlayingCard ?cards))))
+        (evaluate ?n-cardsMatchingColorInHand
+            (LengthOfListFn ?cardsMatchingColorInHand))
+        (greaterThan ?n-cardsMatchingColorInHand 0)))
+
+;; *** check if you have green cards
+(<== (colorIsInHand GreenPlayingCard)
+    (and (evaluate ?cardsMatchingColorInHand
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?cards (cardInHandWithColor GreenPlayingCard ?cards))))
+        (evaluate ?n-cardsMatchingColorInHand
+            (LengthOfListFn ?cardsMatchingColorInHand))
+        (greaterThan ?n-cardsMatchingColorInHand 0)))
+
+;; *** check if you have blue cards
+(<== (colorIsInHand BluePlayingCard)
+    (and (evaluate ?cardsMatchingColorInHand
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?cards (cardInHandWithColor BluePlayingCard ?cards))))
+        (evaluate ?n-cardsMatchingColorInHand
+            (LengthOfListFn ?cardsMatchingColorInHand))
+        (greaterThan ?n-cardsMatchingColorInHand 0)))
+
 ;; ------------------------------------------------------------
 ;; ----------------------- Basic rules ------------------------
 ;; ------------------------------------------------------------
@@ -1048,17 +1087,26 @@
     (and (evaluate ?playableCardValues
         (SetToListFn
             (TheClosedRetrievalSetOf ?value
-                (playableCardValue ?value ?topCard))))
+                (playableCardValue ?value))))
     	(evaluate ?greatestValue (MaximumFn ?playableCardValues IdentityFn)))
-    (playableCards ?highestValueCard ?topCard)
+    (cardState ?highestValueCard playableCard)
     (cardValue ?highestValueCard ?greatestValue))
-
 
 ;; ************ pickWildCardColorEarlyGame ***********
 ;; Method to pick which color to switch to if it is early in the game
 ;; only considers own preferences
 (<== (pickWildCardColorEarlyGame ?color)
-	(mostCommonColorInHand ?color));; opponent information
+	(mostCommonColorInHand ?color))
+
+;; ************ pickWildCardColorLateGame ***********
+;; Method to pick which color to switch to if it is early in the game
+;; should always pick color that you have
+(<== (pickWildCardColorLateGame ?color)
+    (colorIsInHand ?color)
+    (evaluate ?colorsWinnerIsAvoiding
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?color
+                (winnerIsAvoidingColor ?color)))));; opponent information
 
 (in-microtheory UnoPlayer)
 
@@ -1288,7 +1336,7 @@
 
 (preconditionForMethod
     (and
-    	  (endGame)
+    	(endGame)
         (nextMove ?currCard)
         (getTopCard gameState ?topCard)
         (evaluate ?oldPlayableCardList
@@ -1329,7 +1377,7 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
         (isa ?playableCards WildTheCard)
         (pickWildCardColorEarlyGame ?color) ;; TODO: change to late game strategy
         (isa ?newCard WildTheCard)
@@ -1344,8 +1392,8 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
         (isa ?playableCards Draw2TheCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -1357,9 +1405,9 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards ReverseTheCard)
         (opponentHandSize opponent2 ?size)
         (evaluate True (lessThan ?size 4)))
@@ -1373,9 +1421,9 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards SkipTheCard)
         (opponentHandSize opponent2 ?size)
         (evaluate True (greaterThan ?size 3)))
@@ -1389,10 +1437,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (isa ?playableCards SkipTheCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -1404,10 +1452,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable SkipTheCard)
         (isa ?playableCards ReverseTheCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -1419,11 +1467,11 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (changeColorByOpponentPreference ?newColor) ;; TODO: write a function to do this
         (isa ?playableCards ?newColor))
     (methodForAction
@@ -1436,11 +1484,11 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (highestValuePlayableCard ?newCard ?topCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -1505,7 +1553,7 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (typeIsNotPlayable SkipTheCard)
         (isa ?playableCards ReverseTheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -1518,8 +1566,8 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (highestValuePlayableCard ?newCard ?topCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -1532,9 +1580,9 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumericCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
+        (typeIsNotPlayable NumericCard)
         (isa ?playableCards Draw2TheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -1547,10 +1595,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumericCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
+        (typeIsNotPlayable NumericCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards WildTheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -1563,10 +1611,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumericCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
+        (typeIsNotPlayable NumericCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards WildDraw4TheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
