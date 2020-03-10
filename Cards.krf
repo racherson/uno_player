@@ -514,16 +514,32 @@
 
 (isa wildRed WildTheCard)
 (isa wildRed RedPlayingCard)
-(commend wildRed "The UNO playing card that is the generic red color after a wild card is played")
+(comment wildRed "The UNO playing card that is the generic red color after a wild card is played")
 
 (isa wildGreen WildTheCard)
 (isa wildGreen GreenPlayingCard)
-(commend wildRed "The UNO playing card that is the generic green color after a wild card is played")
+(comment wildGreen "The UNO playing card that is the generic green color after a wild card is played")
 
 (isa wildBlue WildTheCard)
 (isa wildBlue BluePlayingCard)
-(commend wildBlue "The UNO playing card that is the generic blue color after a wild card is played")
+(comment wildBlue "The UNO playing card that is the generic blue color after a wild card is played")
 
 (isa wildYellow WildTheCard)
 (isa wildYellow YellowPlayingCard)
-(commend wildYellow "The UNO playing card that is the generic yellow color after a wild card is played")
+(comment wildYellow "Card returned telling user to play a draw 4 and change the color to yellow")
+
+(isa redDraw4 WildDraw4TheCard)
+(isa redDraw4 RedPlayingCard)
+(comment redDraw4 "Card returned telling user to play a draw 4 and change the color to red")
+
+(isa yellowDraw4 WildDraw4TheCard)
+(isa yellowDraw4 YellowPlayingCard)
+(comment yellowDraw4 "Card returned telling user to play a draw 4 and change the color to yellow")
+
+(isa greenDraw4 WildDraw4TheCard)
+(isa greenDraw4 GreenPlayingCard)
+(comment greenDraw4 "Card returned telling user to play a draw 4 and change the color to green")
+
+(isa blueDraw4 WildDraw4TheCard)
+(isa blueDraw4 BluePlayingCard)
+(comment blueDraw4 "Card returned telling user to play a draw 4 and change the color to blue")
