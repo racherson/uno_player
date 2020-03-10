@@ -118,6 +118,22 @@
             (LengthOfListFn ?blueCardList)))
     (equals ?countOfCardsWithMostFrequentColor ?n-blueCardList))
 
+;; ************ playableCardsOfType ***********
+;; Returns playable cards of a specific type
+(<== (playableCardsOfType ?playableCard ?cardType)
+    (cardState ?playableCard playableCard)
+    (isa ?playableCard ?cardType))
+
+;; ************ typeIsNotPlayable ***********
+;; Function to tell you if you have any cards of a type that you can play
+(<== (typeIsNotPlayable ?cardType)
+    (evaluate ?playableCardList
+        (SetToListFn
+            (TheClosedRetrievalSetOf ?playableCard
+                (playableCardsOfType ?playableCard ?cardType))))
+    (evaluate ?n-playableCardList
+        (LengthOfListFn ?playableCardList))
+    (equals ?n-playableCardList 0))
 
 ;; ------------------------------------------------------------
 ;; ----------------------- Basic rules ------------------------

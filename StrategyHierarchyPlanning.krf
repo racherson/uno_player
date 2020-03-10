@@ -232,10 +232,12 @@
 
 ;; Reverses
 
+
+
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (typeIsNotPlayable SkipTheCard)
         (isa ?playableCards ReverseTheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -248,8 +250,8 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (highestValuePlayableCard ?newCard ?topCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -262,9 +264,9 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumericCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
+        (typeIsNotPlayable NumericCard)
         (isa ?playableCards Draw2TheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -277,10 +279,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumericCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
+        (typeIsNotPlayable NumericCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards WildTheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -293,10 +295,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumericCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
+        (typeIsNotPlayable NumericCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards WildDraw4TheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
