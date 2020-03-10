@@ -142,6 +142,9 @@
 (isa discardedCard CardState)
 (comment discardedCard "A card that has been played by a player")
 
+(isa playableCard CardState)
+(comment playableCard "A card in hand that can be played on the top card")
+
 ;; red cards
 
 (isa red0 RedPlayingCard)

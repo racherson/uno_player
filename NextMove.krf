@@ -1,6 +1,5 @@
 (in-microtheory MyNextMoveMt)
 (genlMt UnoPlayer MyNextMoveMt)
-(genlMt Session-ReasonerPlanMt MyNextMove)
 
 (isa nextMove UnaryPredicate)
 (arity nextMove 1)

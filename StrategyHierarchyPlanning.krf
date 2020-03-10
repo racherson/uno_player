@@ -15,25 +15,48 @@
 ;; Switch color away from winning player's preferences
 ;; Play highest numeric card
 
+;;(preconditionForMethod
+;;    (and
+;;    	  (endGame)
+;;        (nextMove ?currCard)
+;;        (getTopCard gameState ?topCard)
+;;        (playableCards ?playableCards ?topCard))
+;;    (methodForAction
+;;        (cardToPlay)
+;;        (actionSequence
+;;          (TheList
+;;            (doAgentPlan
+;;              (cardToPlayHelper ?currCard ?topCard ?playableCards))))))
+
 (preconditionForMethod
     (and
     	  (endGame)
         (nextMove ?currCard)
         (getTopCard gameState ?topCard)
-        (playableCards ?playableCards ?topCard))
+        (evaluate ?oldPlayableCardList
+            (TheClosedRetrievalSetOf ?oldPlayableCard
+                (cardState ?oldPlayableCard playableCard)))
+        (evaluate ?playableCardList
+            (TheClosedRetrievalSetOf ?playableCards
+                (playableCards ?playableCards ?topCard))))
     (methodForAction
         (cardToPlay)
         (actionSequence
           (TheList
+            (doForEach ?oldPlayableCard ?oldPlayableCardList
+                (doForget (ist-Information UnoPlayer (cardState ?oldPlayableCard playableCard))))
+            (doForEach ?playableCard ?playableCardList
+                (doRecord (ist-Information UnoPlayer (cardState ?playableCard playableCard))))
             (doAgentPlan
-              (cardToPlayHelper ?currCard ?topCard ?playableCards))))))
+              (cardToPlayHelper ?currCard ?topCard))))))
 
 ;; Draw 4
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (isa ?playableCards WildDraw4TheCard))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -43,13 +66,14 @@
 ;; returns generic wild card color to indicate color to change to
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (isa ?playableCards WildTheCard)
         (pickWildCardColorEarlyGame ?color) ;; TODO: change to late game strategy
         (isa ?newCard WildTheCard)
         (isa ?newCard ?color))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -58,11 +82,12 @@
 ;; Draw 2
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (uninferredSentence (isa ?playableCards WildTheCard))
         (isa ?playableCards Draw2TheCard))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -71,6 +96,7 @@
 ;; Reverse if opponent2 is close to winning
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (uninferredSentence (isa ?playableCards WildTheCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
@@ -78,7 +104,7 @@
         (opponentHandSize opponent2 ?size)
         (evaluate True (lessThan ?size 4)))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -87,6 +113,7 @@
 ;; Skip
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (uninferredSentence (isa ?playableCards WildTheCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
@@ -94,7 +121,7 @@
         (opponentHandSize opponent2 ?size)
         (evaluate True (greaterThan ?size 4)))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -103,13 +130,14 @@
 ;; Reverse
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (uninferredSentence (isa ?playableCards WildTheCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
         (uninferredSentence (isa ?playableCards SkipTheCard))
         (isa ?playableCards ReverseTheCard))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -118,6 +146,7 @@
 ;; Switch color away from opponent preferences
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (uninferredSentence (isa ?playableCards WildTheCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
@@ -126,7 +155,7 @@
         (changeColorByOpponentPreference ?newColor) ;; TODO: write a function to do this
         (isa ?playableCards ?newColor))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
@@ -135,6 +164,7 @@
 ;; Highest numeric card
 (preconditionForMethod
     (and
+        (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards WildDraw4TheCard))
         (uninferredSentence (isa ?playableCards WildTheCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
@@ -142,7 +172,7 @@
         (uninferredSentence (isa ?playableCards ReverseTheCard))
         (highestValuePlayableCard ?newCard ?topCard))
     (methodForAction
-        (cardToPlayHelper ?currCard ?topCard ?playableCards)
+        (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
