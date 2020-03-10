@@ -96,7 +96,7 @@
             (TheClosedRetrievalSetOf ?yellowCards (cardInHandWithColor YellowPlayingCard ?yellowCards))))
         (evaluate ?n-yellowCardList
             (LengthOfListFn ?yellowCardList)))
-    (equals ?countOfCardsWithMostFrequentColor ?n-ryellowCardList))
+    (equals ?countOfCardsWithMostFrequentColor ?n-yellowCardList))
 
 ;; *** check if you have the most green cards
 (<== (mostCommonColorInHand GreenPlayingCard)

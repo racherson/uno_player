@@ -58,3 +58,6 @@
 
 (isa cardToPlayHelper ComplexActionPredicate)
 (arity cardToPlayHelper 3)
+
+(isa cardToPlayHelperEarly ComplexActionPredicate)
+(arity cardToPlayHelperEarly 3)
