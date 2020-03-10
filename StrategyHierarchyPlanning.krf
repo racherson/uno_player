@@ -196,8 +196,124 @@
 ;; planning to be done if (earlyGame) returns true
 
 ;; Skips and reverses
-;; Color you have more of
 ;; Highest numeric card
 ;; Draw 2s
 ;; Wilds
 ;; Draw 4s
+
+(preconditionForMethod
+    (and
+    	(earlyGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (evaluate ?oldPlayableCardList
+            (TheClosedRetrievalSetOf ?oldPlayableCard
+                (cardState ?oldPlayableCard playableCard)))
+        (evaluate ?playableCardList
+            (TheClosedRetrievalSetOf ?playableCards
+                (playableCards ?playableCards ?topCard)))
+        (evaluate ?nextMoveList
+            (TheClosedRetrievalSetOf ?nextMove
+                (nextMove ?nextMove))))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+          (TheList
+            (doForEach ?oldPlayableCard ?oldPlayableCardList
+                (doForget (ist-Information UnoPlayer (cardState ?oldPlayableCard playableCard))))
+            (doForEach ?nextMove ?nextMoveList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?nextMove))))
+            (doForEach ?playableCard ?playableCardList
+                (doRecord (ist-Information UnoPlayer (cardState ?playableCard playableCard))))
+            (doAgentPlan
+              (cardToPlayHelperEarly ?currCard ?topCard))))))
+
+
+;; Skips 
+
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (isa ?playableCards SkipTheCard))
+    (methodForAction
+        (cardToPlayHelperEarly ?currCard ?topCard)
+        (actionSequence
+            (TheList
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
+
+;; Reverses
+
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (isa ?playableCards ReverseTheCard))
+    (methodForAction
+        (cardToPlayHelperEarly ?currCard ?topCard)
+        (actionSequence
+            (TheList
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
+;; Highest numeric card
+
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (highestValuePlayableCard ?newCard ?topCard))
+    (methodForAction
+        (cardToPlayHelperEarly ?currCard ?topCard)
+        (actionSequence
+            (TheList
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
+
+;; Draw 2s
+
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (uninferredSentence (isa ?playableCards NumbericCard))
+        (isa ?playableCards Draw2TheCard))
+    (methodForAction
+        (cardToPlayHelperEarly ?currCard ?topCard)
+        (actionSequence
+            (TheList
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
+;; Wilds
+
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (uninferredSentence (isa ?playableCards NumbericCard))
+        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (isa ?playableCards WildTheCard))
+    (methodForAction
+        (cardToPlayHelperEarly ?currCard ?topCard)
+        (actionSequence
+            (TheList
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
+;; Draw 4s
+
+(preconditionForMethod
+    (and
+        (cardState ?playableCards playableCard)
+        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (uninferredSentence (isa ?playableCards NumbericCard))
+        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (isa ?playableCards WildDraw4TheCard))
+    (methodForAction
+        (cardToPlayHelperEarly ?currCard ?topCard)
+        (actionSequence
+            (TheList
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
+
