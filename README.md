@@ -49,3 +49,7 @@ If it is your turn and you want to know your best move, run the following comman
          
           
 Alternatively, you can view your recommended move after running the command (cardToPlay) by going to the Query tab in the session-reasoner and running the following query (nextMove ?card) in the context MyNextMoveMt. 
+
+## Notes
+
+Some commands and queries may take some time to run. If it looks like the KB isn't updated immediately, wait up to a minute just in case and give the system time to run. 
