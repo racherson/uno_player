@@ -189,7 +189,6 @@
     (matchingCards ?topCard ?card))
 
 ;; *** check for playable wild cards (can always be played)
-;; TODO: store color once its been decided
 (<== (playableCards ?card ?topCard)
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)
@@ -204,7 +203,6 @@
     (isa ?card Draw2TheCard))
 
 ;; *** check for playable draw4 cards
-;; TODO: store color once its been decided
 (<== (playableCards ?playableWildCard ?topCard)
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)

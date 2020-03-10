@@ -46,6 +46,8 @@ If an opponent plays a card that isn't a wild card, run the following command (o
 This is the primary purpose of our system.
 
 If it is your turn and you want to know your best move, run the following command (cardToPlay). Then, go back to the status tab in Companions, right-click session-reasoner and select Browse KB. Search "MyNextMoveMt" in the search bar, and open up facts in mt. You will see a fact of the form (nextMove ?card) where ?card is the recommended card to play. Here is what the fact looks like with real entities: (nextMove blue8)
+
+If you are recommended to play a wild card, the entity's name will reflect a wild card and a color to change to. For example, if you should play a wild card and change the color to red, your next move would look like (nextMove wildRed). 
          
 ## Notes
 

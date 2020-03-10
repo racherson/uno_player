@@ -61,7 +61,7 @@
         (cardState ?playableCards playableCard)
         (typeIsNotPlayable WildDraw4TheCard)
         (isa ?playableCards WildTheCard)
-        (pickWildCardColorLateGame ?color) ;; TODO: change to late game strategy
+        (pickWildCardColorLateGame ?color) 
         (isa ?newCard WildTheCard)
         (isa ?newCard ?color))
     (methodForAction
@@ -139,23 +139,6 @@
         (typeIsNotPlayable Draw2TheCard)
         (typeIsNotPlayable SkipTheCard)
         (isa ?playableCards ReverseTheCard))
-    (methodForAction
-        (cardToPlayHelper ?currCard ?topCard)
-        (actionSequence
-            (TheList
-                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
-
-;; Switch color away from opponent preferences
-(preconditionForMethod
-    (and
-        (cardState ?playableCards playableCard)
-        (typeIsNotPlayable WildDraw4TheCard)
-        (typeIsNotPlayable WildTheCard)
-        (typeIsNotPlayable Draw2TheCard)
-        (typeIsNotPlayable SkipTheCard)
-        (typeIsNotPlayable ReverseTheCard)
-        (changeColorByOpponentPreference ?newColor) ;; TODO: write a function to do this
-        (isa ?playableCards ?newColor))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
