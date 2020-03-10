@@ -261,12 +261,16 @@
         (typeIsNotPlayable ReverseTheCard)
         (typeIsNotPlayable NumericCard)
         (typeIsNotPlayable Draw2TheCard)
-        (isa ?playableCards WildTheCard))
+        (isa ?playableCards WildTheCard)
+        (pickWildCardColorEarlyGame ?color) 
+        (isa ?newCard WildTheCard)
+        (isa ?newCard ?color))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
 
 ;; Draw 4s
 (preconditionForMethod

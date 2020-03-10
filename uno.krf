@@ -1031,6 +1031,14 @@
             (LengthOfListFn ?cardsMatchingColorInHand))
         (greaterThan ?n-cardsMatchingColorInHand 0)))
 
+
+;; ************ winnerIsAvoidingColor *************
+;; Method to get avoided colors from opponents close to winning
+(<== (winnerIsAvoidingColor ?color)
+     (colorPreference ?opponent ?color unoAvoid)
+     (opponentHandSize ?opponent ?size) 
+     (lessThan ?size 4))
+
 ;; ------------------------------------------------------------
 ;; ----------------------- Basic rules ------------------------
 ;; ------------------------------------------------------------
@@ -1104,7 +1112,8 @@
     (evaluate ?colorsWinnerIsAvoiding
         (SetToListFn
             (TheClosedRetrievalSetOf ?color
-                (winnerIsAvoidingColor ?color)))));; opponent information
+                (winnerIsAvoidingColor ?color)))))
+;; opponent information
 
 (in-microtheory UnoPlayer)
 
@@ -1580,12 +1589,16 @@
         (typeIsNotPlayable ReverseTheCard)
         (typeIsNotPlayable NumericCard)
         (typeIsNotPlayable Draw2TheCard)
-        (isa ?playableCards WildTheCard))
+        (isa ?playableCards WildTheCard)
+        (pickWildCardColorEarlyGame ?color) 
+        (isa ?newCard WildTheCard)
+        (isa ?newCard ?color))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+
 
 ;; Draw 4s
 (preconditionForMethod
