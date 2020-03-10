@@ -47,9 +47,6 @@ This is the primary purpose of our system.
 
 If it is your turn and you want to know your best move, run the following command (cardToPlay). Then, go back to the status tab in Companions, right-click session-reasoner and select Browse KB. Search "MyNextMoveMt" in the search bar, and open up facts in mt. You will see a fact of the form (nextMove ?card) where ?card is the recommended card to play. Here is what the fact looks like with real entities: (nextMove blue8)
          
-          
-Alternatively, you can view your recommended move after running the command (cardToPlay) by going to the Query tab in the session-reasoner and running the following query (nextMove ?card) in the context MyNextMoveMt. 
-
 ## Notes
 
 Some commands and queries may take some time to run. If it looks like the KB isn't updated immediately, wait a minute just in case and give the system time to run. The status tab will tell you the states of the different agents; here you can see if the session-reasoner is still planning. 

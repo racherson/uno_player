@@ -61,7 +61,7 @@
         (cardState ?playableCards playableCard)
         (typeIsNotPlayable WildDraw4TheCard)
         (isa ?playableCards WildTheCard)
-        (pickWildCardColorEarlyGame ?color) ;; TODO: change to late game strategy
+        (pickWildCardColorLateGame ?color) ;; TODO: change to late game strategy
         (isa ?newCard WildTheCard)
         (isa ?newCard ?color))
     (methodForAction
@@ -92,7 +92,7 @@
         (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards ReverseTheCard)
         (opponentHandSize opponent2 ?size)
-        (evaluate True (lessThan ?size 4)))
+        (lessThan ?size 4))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
@@ -108,7 +108,7 @@
         (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards SkipTheCard)
         (opponentHandSize opponent2 ?size)
-        (evaluate True (greaterThan ?size 3)))
+        (greaterThan ?size 3))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
