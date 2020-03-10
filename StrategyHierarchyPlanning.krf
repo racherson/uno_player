@@ -84,6 +84,7 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Reverse if opponent2 is close to winning
+;; In this case, it is preferred to use a reverse over a skip because a skip would skip straight from you to opponent2 who is already close to winning
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -99,7 +100,8 @@
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
-;; Skip and reverse
+;; Skip if opponent2 is not close to winning
+;; It is okay if we skip directly to opponent2 because they are not a threat right now
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -130,7 +132,7 @@
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
-;; Reverse
+;; Reverse only
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -201,7 +203,6 @@
 
 
 ;; Skips
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -214,7 +215,6 @@
 
 
 ;; Reverses
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -227,7 +227,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Highest numeric card
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -241,7 +240,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
 
 ;; Draw 2s
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -256,7 +254,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Wilds
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -272,7 +269,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Draw 4s
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)

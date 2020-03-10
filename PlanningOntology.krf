@@ -55,9 +55,12 @@
 
 (isa cardToPlay ComplexActionPredicate)
 (arity cardToPlay 0)
+(comment cardToPlay "Command used to generate recommendation for card to play next")
 
 (isa cardToPlayHelper ComplexActionPredicate)
 (arity cardToPlayHelper 3)
+(comment cardToPlayHelper "Helper for cardToPlay for late game")
 
 (isa cardToPlayHelperEarly ComplexActionPredicate)
 (arity cardToPlayHelperEarly 3)
+(comment cardToPlayHelperEarly "Helper for cardToPlay for early game")
