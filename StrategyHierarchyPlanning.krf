@@ -18,7 +18,7 @@
 
 (preconditionForMethod
     (and
-    	  (endGame)
+    	(endGame)
         (nextMove ?currCard)
         (getTopCard gameState ?topCard)
         (evaluate ?oldPlayableCardList
@@ -59,7 +59,7 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
         (isa ?playableCards WildTheCard)
         (pickWildCardColorEarlyGame ?color) ;; TODO: change to late game strategy
         (isa ?newCard WildTheCard)
@@ -74,8 +74,8 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
         (isa ?playableCards Draw2TheCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -87,9 +87,9 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards ReverseTheCard)
         (opponentHandSize opponent2 ?size)
         (evaluate True (lessThan ?size 4)))
@@ -103,9 +103,9 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards SkipTheCard)
         (opponentHandSize opponent2 ?size)
         (evaluate True (greaterThan ?size 3)))
@@ -119,10 +119,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (isa ?playableCards SkipTheCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -134,10 +134,10 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards SkipTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable SkipTheCard)
         (isa ?playableCards ReverseTheCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -149,11 +149,11 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (changeColorByOpponentPreference ?newColor) ;; TODO: write a function to do this
         (isa ?playableCards ?newColor))
     (methodForAction
@@ -166,11 +166,11 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (uninferredSentence (isa ?playableCards WildDraw4TheCard))
-        (uninferredSentence (isa ?playableCards WildTheCard))
-        (uninferredSentence (isa ?playableCards Draw2TheCard))
-        (uninferredSentence (isa ?playableCards SkipTheCard))
-        (uninferredSentence (isa ?playableCards ReverseTheCard))
+        (typeIsNotPlayable WildDraw4TheCard)
+        (typeIsNotPlayable WildTheCard)
+        (typeIsNotPlayable Draw2TheCard)
+        (typeIsNotPlayable SkipTheCard)
+        (typeIsNotPlayable ReverseTheCard)
         (highestValuePlayableCard ?newCard ?topCard))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
@@ -231,8 +231,6 @@
 
 
 ;; Reverses
-
-
 
 (preconditionForMethod
     (and

@@ -52,4 +52,4 @@ Alternatively, you can view your recommended move after running the command (car
 
 ## Notes
 
-Some commands and queries may take some time to run. If it looks like the KB isn't updated immediately, wait up to a minute just in case and give the system time to run. 
+Some commands and queries may take some time to run. If it looks like the KB isn't updated immediately, wait a minute just in case and give the system time to run. The status tab will tell you the states of the different agents; here you can see if the session-reasoner is still planning. 
