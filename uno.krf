@@ -79,7 +79,7 @@
 (genls NineTheCard PlayingCard)
 (comment NineTheCard "A subcollection of PlayingCard that contains all of the cards which have the numerical value of 'Nine'")
 
-(isa NumericCard NumberCardType)
+(isa NumericCard SecondOrderCollection)
 (genls NumericCard PlayingCard)
 (comment NumericCard "The collection of all numeric cards in the deck")
 
