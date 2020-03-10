@@ -15,18 +15,6 @@
 ;; Switch color away from winning player's preferences
 ;; Play highest numeric card
 
-;;(preconditionForMethod
-;;    (and
-;;    	  (endGame)
-;;        (nextMove ?currCard)
-;;        (getTopCard gameState ?topCard)
-;;        (playableCards ?playableCards ?topCard))
-;;    (methodForAction
-;;        (cardToPlay)
-;;        (actionSequence
-;;          (TheList
-;;            (doAgentPlan
-;;              (cardToPlayHelper ?currCard ?topCard ?playableCards))))))
 
 (preconditionForMethod
     (and
@@ -229,7 +217,7 @@
               (cardToPlayHelperEarly ?currCard ?topCard))))))
 
 
-;; Skips 
+;; Skips
 
 (preconditionForMethod
     (and
@@ -315,5 +303,3 @@
         (actionSequence
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
-
-
