@@ -1046,7 +1046,6 @@
     (matchingCards ?topCard ?card))
 
 ;; *** check for playable wild cards (can always be played)
-;; TODO: store color once its been decided
 (<== (playableCards ?card ?topCard)
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)
@@ -1061,7 +1060,6 @@
     (isa ?card Draw2TheCard))
 
 ;; *** check for playable draw4 cards
-;; TODO: store color once its been decided
 (<== (playableCards ?playableWildCard ?topCard)
     (numberCardsToDraw cardsToDraw ?drawCount)
     (equals ?drawCount 0)
@@ -1227,12 +1225,15 @@
 
 (isa cardToPlay ComplexActionPredicate)
 (arity cardToPlay 0)
+(comment cardToPlay "Command used to generate recommendation for card to play next")
 
 (isa cardToPlayHelper ComplexActionPredicate)
 (arity cardToPlayHelper 3)
+(comment cardToPlayHelper "Helper for cardToPlay for late game")
 
 (isa cardToPlayHelperEarly ComplexActionPredicate)
 (arity cardToPlayHelperEarly 3)
+(comment cardToPlayHelperEarly "Helper for cardToPlay for early game")
 (in-microtheory UnoPlayer)
 
 ;; Game state information (e.g. close to end of game, player turn direction)
@@ -1379,7 +1380,7 @@
         (cardState ?playableCards playableCard)
         (typeIsNotPlayable WildDraw4TheCard)
         (isa ?playableCards WildTheCard)
-        (pickWildCardColorEarlyGame ?color) ;; TODO: change to late game strategy
+        (pickWildCardColorLateGame ?color) 
         (isa ?newCard WildTheCard)
         (isa ?newCard ?color))
     (methodForAction
@@ -1402,6 +1403,7 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Reverse if opponent2 is close to winning
+;; In this case, it is preferred to use a reverse over a skip because a skip would skip straight from you to opponent2 who is already close to winning
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1410,14 +1412,15 @@
         (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards ReverseTheCard)
         (opponentHandSize opponent2 ?size)
-        (evaluate True (lessThan ?size 4)))
+        (lessThan ?size 4))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
-;; Skip and reverse
+;; Skip if opponent2 is not close to winning
+;; It is okay if we skip directly to opponent2 because they are not a threat right now
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1426,7 +1429,7 @@
         (typeIsNotPlayable Draw2TheCard)
         (isa ?playableCards SkipTheCard)
         (opponentHandSize opponent2 ?size)
-        (evaluate True (greaterThan ?size 3)))
+        (greaterThan ?size 3))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
@@ -1448,7 +1451,7 @@
             (TheList
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
-;; Reverse
+;; Reverse only
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1457,23 +1460,6 @@
         (typeIsNotPlayable Draw2TheCard)
         (typeIsNotPlayable SkipTheCard)
         (isa ?playableCards ReverseTheCard))
-    (methodForAction
-        (cardToPlayHelper ?currCard ?topCard)
-        (actionSequence
-            (TheList
-                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
-
-;; Switch color away from opponent preferences
-(preconditionForMethod
-    (and
-        (cardState ?playableCards playableCard)
-        (typeIsNotPlayable WildDraw4TheCard)
-        (typeIsNotPlayable WildTheCard)
-        (typeIsNotPlayable Draw2TheCard)
-        (typeIsNotPlayable SkipTheCard)
-        (typeIsNotPlayable ReverseTheCard)
-        (changeColorByOpponentPreference ?newColor) ;; TODO: write a function to do this
-        (isa ?playableCards ?newColor))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
@@ -1536,7 +1522,6 @@
 
 
 ;; Skips
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1549,7 +1534,6 @@
 
 
 ;; Reverses
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1562,7 +1546,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Highest numeric card
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1576,7 +1559,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
 
 ;; Draw 2s
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1591,7 +1573,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Wilds
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
@@ -1607,7 +1588,6 @@
                 (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
 
 ;; Draw 4s
-
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
