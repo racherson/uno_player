@@ -1201,8 +1201,6 @@
 (in-microtheory UnoPlayer)
 (genlMt Session-ReasonerPlanMt UnoPlayer)
 
-(genlMt Session-ReasonerPlanMt MyNextMove)
-
 
 ;; ------------------------------------------------------------
 ;; ----------------------- Late Game Hierarchy ----------------
@@ -1220,17 +1218,154 @@
 ;; Draw 4
 (preconditionForMethod
     (and
-    	(endGame)
+    	  (endGame)
         (nextMove ?currCard)
         (getTopCard gameState ?topCard)
-        (playableCards ?card ?topCard)
-        (isa ?card WildDraw4TheCard))
+        (playableCards ?cards ?topCard)
+        (isa ?cards WildDraw4TheCard))
     (methodForAction
         (cardToPlay)
         (actionSequence
             (TheList
                 (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
-                (doRecord (ist-Information MyNextMoveMt (nextMove ?card)))))))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+
+;; Wild
+;; returns generic wild card color to indicate color to change to
+(preconditionForMethod
+    (and
+    	  (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (isa ?cards WildTheCard)
+        (pickWildCardColorEarlyGame ?color) ;; TODO: change to late game strategy
+        (isa ?newCard WildTheCard)
+        (isa ?newCard ?color))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
+
+;; Draw 2
+(preconditionForMethod
+    (and
+    	  (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (uninferredSentence (isa ?cards WildTheCard))
+        (isa ?cards Draw2TheCard))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+
+;; Reverse if opponent2 is close to winning
+(preconditionForMethod
+    (and
+    	  (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (uninferredSentence (isa ?cards WildTheCard))
+        (uninferredSentence (isa ?cards Draw2TheCard))
+        (isa ?cards ReverseTheCard)
+        (opponentHandSize opponent2 ?size)
+        (evaluate True (lessThan ?size 4)))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+
+;; Skip
+(preconditionForMethod
+    (and
+    	  (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (uninferredSentence (isa ?cards WildTheCard))
+        (uninferredSentence (isa ?cards Draw2TheCard))
+        (isa ?cards SkipTheCard)
+        (opponentHandSize opponent2 ?size)
+        (evaluate True (greaterThan ?size 4)))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+
+;; Reverse
+(preconditionForMethod
+    (and
+    	  (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (uninferredSentence (isa ?cards WildTheCard))
+        (uninferredSentence (isa ?cards Draw2TheCard))
+        (uninferredSentence (isa ?cards SkipTheCard))
+        (isa ?cards ReverseTheCard))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+
+;; Switch color away from opponent preferences
+(preconditionForMethod
+    (and
+    	  (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (uninferredSentence (isa ?cards WildTheCard))
+        (uninferredSentence (isa ?cards Draw2TheCard))
+        (uninferredSentence (isa ?cards SkipTheCard))
+        (uninferredSentence (isa ?cards ReverseTheCard))
+        (changeColorByOpponentPreference ?newColor) ;; TODO: write a function to do this
+        (isa ?cards ?newColor))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?cards)))))))
+
+;; Highest numeric card
+(preconditionForMethod
+    (and
+        (endGame)
+        (nextMove ?currCard)
+        (getTopCard gameState ?topCard)
+        (playableCards ?cards ?topCard)
+        (uninferredSentence (isa ?cards WildDraw4TheCard))
+        (uninferredSentence (isa ?cards WildTheCard))
+        (uninferredSentence (isa ?cards Draw2TheCard))
+        (uninferredSentence (isa ?cards SkipTheCard))
+        (uninferredSentence (isa ?cards ReverseTheCard))
+        (highestValuePlayableCard ?newCard ?topCard))
+    (methodForAction
+        (cardToPlay)
+        (actionSequence
+            (TheList
+                (doForget (ist-Information MyNextMoveMt (nextMove ?currCard)))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
 
 ;; ------------------------------------------------------------
 ;; ----------------------- Early Game Hierarchy ----------------
