@@ -15,11 +15,11 @@ See OpponentsState.krf to see opponent entities and properties. Example opponent
 See Cards.krf for color collections. Example color collections include RedPlayingCard, BluePlayingCard. 
 
 ## Instructions for Playing a Game
-1. Initialize Game
+**1. Initialize Game**
 
-Initialize the game state with the top card in the discard pile and the cards in your hand. To do this, go to the commands tab in Companions and run the following command (InitializeGame topCard hand1 hand2 hand3 hand4 hand5 hand6 hand7) where topCard is the top card in the discard pile and hand1 through hand7 are the seven cards you start with in your hand. Here is an example of the InitializeGame command with real entities: (InitializeGame blue2 bluedraw2 blue1 blue3 bluereverse blueskip blue8 blue0) 
+Initialize the game state with the top card in the discard pile and the cards in your hand. To do this, go to the commands tab in Companions and run the following command (InitializeGame ?topCard ?card1 ?card2 ?card3 ?card4 ?card5 ?card6 ?card7) where topCard is the top card in the discard pile and ?card1 through ?card7 are the seven cards you start with in your hand. Here is an example of the InitializeGame command with real entities: (InitializeGame blue2 bluedraw2 blue1 blue3 bluereverse blueskip blue8 blue0) 
 
-2. Your Turn
+**2. Your Turn**
 
 When it is your turn, you can either draw or play a card. Both outcomes will involve commands in the commands tab in Companions. 
 
@@ -29,7 +29,7 @@ If you play a card, run the following command (selfPlayedCard ?card) with the ca
 
 See instruction #4 for how to get recommendations for what card to play on your turn.
 
-3. Opponents' Turns
+**3. Opponents' Turns**
 
 When it is an opponents turn, they can either draw or play a card. Both outcomes will involve commands in the commands tab in Companions. 
 
@@ -41,7 +41,7 @@ If an opponent played a wild card, run the following command (opponentPlayedWild
 
 If an opponent plays a card that isn't a wild card, run the following command (opponentPlayedCard ?opponent ?card) with the respective opponent and card entities. Here is an example of the opponentPlayedCard command with real entities: (opponentPlayedCard opponent1 blue3)
 
-4. Recommendations
+**4. Recommendations**
 
 This is the primary purpose of our system.
 
