@@ -55,3 +55,6 @@
 
 (isa cardToPlay ComplexActionPredicate)
 (arity cardToPlay 0)
+
+(isa cardToPlayHelper ComplexActionPredicate)
+(arity cardToPlayHelper 3)
