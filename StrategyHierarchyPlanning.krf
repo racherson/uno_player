@@ -276,7 +276,7 @@
         (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards SkipTheCard))
         (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumbericCard))
+        (uninferredSentence (isa ?playableCards NumericCard))
         (isa ?playableCards Draw2TheCard))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
@@ -291,7 +291,7 @@
         (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards SkipTheCard))
         (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumbericCard))
+        (uninferredSentence (isa ?playableCards NumericCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
         (isa ?playableCards WildTheCard))
     (methodForAction
@@ -307,7 +307,7 @@
         (cardState ?playableCards playableCard)
         (uninferredSentence (isa ?playableCards SkipTheCard))
         (uninferredSentence (isa ?playableCards ReverseTheCard))
-        (uninferredSentence (isa ?playableCards NumbericCard))
+        (uninferredSentence (isa ?playableCards NumericCard))
         (uninferredSentence (isa ?playableCards Draw2TheCard))
         (isa ?playableCards WildDraw4TheCard))
     (methodForAction
