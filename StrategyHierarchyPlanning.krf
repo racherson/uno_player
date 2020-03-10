@@ -120,7 +120,7 @@
         (uninferredSentence (isa ?playableCards Draw2TheCard))
         (isa ?playableCards SkipTheCard)
         (opponentHandSize opponent2 ?size)
-        (evaluate True (greaterThan ?size 4)))
+        (evaluate True (greaterThan ?size 3)))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
