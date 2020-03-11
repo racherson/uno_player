@@ -47,12 +47,15 @@
 (preconditionForMethod
     (and
         (cardState ?playableCards playableCard)
-        (isa ?playableCards WildDraw4TheCard))
+        (isa ?playableCards WildDraw4TheCard)
+        (pickWildCardColorLateGame ?color) 
+        (isa ?newCard WildDraw4TheCard)
+        (isa ?newCard ?color))
     (methodForAction
         (cardToPlayHelper ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+                (doRecord (ist-Information MyNextMoveMt(nextMove ?newCard)))))))
 
 ;; Wild
 ;; returns generic wild card color to indicate color to change to
@@ -280,9 +283,12 @@
         (typeIsNotPlayable ReverseTheCard)
         (typeIsNotPlayable NumericCard)
         (typeIsNotPlayable Draw2TheCard)
-        (isa ?playableCards WildDraw4TheCard))
+        (isa ?playableCards WildDraw4TheCard)
+        (pickWildCardColorEarlyGame ?color) 
+        (isa ?newCard WildDraw4TheCard)
+        (isa ?newCard ?color))
     (methodForAction
         (cardToPlayHelperEarly ?currCard ?topCard)
         (actionSequence
             (TheList
-                (doRecord (ist-Information MyNextMoveMt (nextMove ?playableCards)))))))
+                (doRecord (ist-Information MyNextMoveMt (nextMove ?newCard)))))))
