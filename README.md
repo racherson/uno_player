@@ -34,7 +34,7 @@ See instruction #4 for how to get recommendations for what card to play on your 
 
 **3. Opponents' Turns**
 
-When it is an opponents turn, they can either draw or play a card. Both outcomes will involve commands in the commands tab in Companions. 
+When it is an opponent's turn, they can either draw or play a card. Both outcomes will involve commands in the commands tab in Companions. 
 
 If an opponent draws and then plays a card (e.g. they had no playable cards in their hand and the card they drew was playable), run the following command (opponentDrewAndPlayed ?opponent ?card) with the respective opponent and card entities. Here is an example of the opponentDrewAndPlayed command with real entities:  (opponentDrewAndPlayed opponent1 green5)
 
@@ -55,3 +55,9 @@ If you are recommended to play a wild card, the entity's name will reflect a wil
 ## Notes
 
 Some commands and queries may take some time to run. If it looks like the KB isn't updated immediately, wait a minute just in case and give the system time to run. The status tab will tell you the states of the different agents; here you can see if the session-reasoner is still planning. 
+
+## Representation
+The Cards.krf file contains how we represent the card entities and their properties (e.g. colors, numbers, symbols). The OpponentsState.krf file contains how we represent the opponent entities and their properties (e.g. hand size, color preferences). The GameState.krf file contains how we represent the state of the game (e.g. top card in discard pile). 
+
+## Reasoning
+We use planning and horn clauses for our reasoning. StrategyHierarchyPlanning.krf contains our early and late-game strategies. These strategies involve a rule hierarchy implemented via planning. PlayableCardQueries.krf contains helper horn clauses used to implement our strategies, for instance finding the highest numeric playable card in your hand or what color to switch to when playing a wild. UpdateGameStatePlanning.krf handles the side effects and reasoning of yourself and opponents turns. For example, updating an opponent's hand size when they draw or play a card, or updating an opponent's color preferences when they play a wild. All planning methods are listed with their arities in the PlanningOntology.krf file. 
