@@ -1,5 +1,6 @@
 # Companions Uno AI
 This Uno AI uses Companions to track a game of Uno between 4 players and provide move suggestions for one player.
+Companions is a cognitive architecture inspired by natural intelligent systems developed by the Qualitative Reasoning Group at Northwestern University. https://users.cs.northwestern.edu/~mek802/papers/AAAI08-FS-Companions.pdf
 
 ## Developers
 Rachel Anderson, Corinne Burger, Hannah Gaertner, Kylie Chesner
